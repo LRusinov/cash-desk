@@ -15,6 +15,6 @@ public class Transaction {
     private TransactionType type;
     private Currency currency;
     private BigDecimal amount;
-    private Map<Denomination, Integer> denominations;
+    private Map<? extends Denomination, Integer> denominations;
     private LocalDateTime timestamp;
 }

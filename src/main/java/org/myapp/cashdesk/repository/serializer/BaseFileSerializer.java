@@ -1,20 +1,21 @@
 package org.myapp.cashdesk.repository.serializer;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+import org.myapp.cashdesk.model.Currency;
 import org.myapp.cashdesk.model.Denomination;
+import org.myapp.cashdesk.model.DenominationFactory;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
-import java.util.Formatter;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public abstract class BaseFileSerializer<T> implements FileSerializer<T> {
-    protected static final String FIELD_DELIMITER = "\\|";
+    protected static final String FIELD_DELIMITER = "|";
     protected static final String ITEM_DELIMITER = ",";
     protected static final String DENOMINATION_DELIMITER = "x";
-
-    protected BaseFileSerializer() {
-    }
 
     protected String joinFields(final String... fields) {
         return String.join(FIELD_DELIMITER, fields);
@@ -30,11 +31,13 @@ public abstract class BaseFileSerializer<T> implements FileSerializer<T> {
                 .collect(Collectors.joining(ITEM_DELIMITER));
     }
 
-    protected <E extends Enum<E> & Denomination> Map<E, Integer> parseDenominations(final String itemsStr, final Class<E> enumClass) {
-        return Arrays.stream(itemsStr.split(ITEM_DELIMITER))
+    protected Map<Denomination, Integer> parseDenominations(String denominationsStr, Currency currency) {
+        if (denominationsStr.isEmpty()) return Map.of();
+
+        return Arrays.stream(denominationsStr.split(ITEM_DELIMITER))
                 .map(s -> s.split(DENOMINATION_DELIMITER))
                 .collect(Collectors.toMap(
-                        parts -> Denomination.Lookup.fromValue(new BigDecimal(parts[1]), enumClass),
+                        parts -> DenominationFactory.createDenomination(currency, new BigDecimal(parts[1])),
                         parts -> Integer.parseInt(parts[0])
                 ));
     }

@@ -1,17 +1,10 @@
 package org.myapp.cashdesk.repository.serializer;
 
 import org.myapp.cashdesk.model.*;
-
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.Map;
 
 public class TransactionSerializer extends BaseFileSerializer<Transaction> {
-
-    public TransactionSerializer() {
-        super();
-    }
-
     @Override
     public String serialize(final Transaction transaction) {
         return joinFields(
@@ -29,7 +22,7 @@ public class TransactionSerializer extends BaseFileSerializer<Transaction> {
     @Override
     public Transaction parse(final String line) {
         String[] parts = splitFields(line);
-        if (parts.length < 7) return null;
+        if (parts.length < 8) return null;
 
         try {
             Currency currency = Currency.valueOf(parts[4]);
@@ -40,22 +33,11 @@ public class TransactionSerializer extends BaseFileSerializer<Transaction> {
                     OperationType.valueOf(parts[3]),
                     currency,
                     new BigDecimal(parts[5]),
-                    parseDenominationsByCurrency(parts[6], currency),
+                    parseDenominations(parts[6], currency),
                     LocalDateTime.parse(parts[7])
             );
         } catch (Exception e) {
             return null;
-        }
-    }
-
-    private Map<? extends Denomination, Integer> parseDenominationsByCurrency(
-            final String itemsStr,
-            final Currency currency) {
-
-        if (currency == Currency.BGN) {
-            return parseDenominations(itemsStr, BgnDenomination.class);
-        } else {
-            return parseDenominations(itemsStr, EurDenomination.class);
         }
     }
 }

@@ -3,6 +3,7 @@ package org.myapp.cashdesk.repository;
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.myapp.cashdesk.model.*;
+import org.myapp.cashdesk.model.Currency;
 import org.myapp.cashdesk.repository.serializer.CashierSerializer;
 import org.myapp.cashdesk.repository.serializer.FileSerializer;
 import org.springframework.stereotype.Repository;
@@ -82,9 +83,9 @@ public class FileCashierRepository implements CashierRepository {
         if (!cashiersMap.isEmpty()) return;
 
         final List<String> defaultCashiers = List.of("MARTINA", "PETER", "LINDA");
-        final CurrencyBalance defaultBalanceBgn = new CurrencyBalance(
+        final CurrencyBalance defaultBalanceBgn = new CurrencyBalance(Currency.BGN,
                 Map.of(FIFTY_LEVA, 10, TEN_LEVA, 50), BigDecimal.valueOf(1000));
-        final CurrencyBalance defaultBalanceEur = new CurrencyBalance(
+        final CurrencyBalance defaultBalanceEur = new CurrencyBalance(Currency.EUR,
                 Map.of(ONE_HUNDRED_EUROS, 10, TWENTY_EUROS, 50), BigDecimal.valueOf(2000));
 
         log.info("Initializing default cashiers");

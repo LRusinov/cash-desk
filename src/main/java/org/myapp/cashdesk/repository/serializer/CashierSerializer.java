@@ -8,7 +8,7 @@ import java.util.Map;
 import static java.util.Objects.isNull;
 
 public class CashierSerializer extends BaseFileSerializer<Cashier> {
-    private static final String BALANCE_DELIMITER = ";";// No space between amount and currency
+    private static final String BALANCE_DELIMITER = ";";
     public static final String EMPTY_STRING = "";
 
     @Override
@@ -41,13 +41,10 @@ public class CashierSerializer extends BaseFileSerializer<Cashier> {
     private String serializeBalance(final CurrencyBalance balance, final Currency currency) {
         if (isNull(balance)) return EMPTY_STRING;
 
-        BigDecimal total = balance.getTotalAmount();
-        String denominationsStr = joinDenominations(balance.getDenominations());
-
-        return total.stripTrailingZeros().toPlainString() +
+        return balance.getTotalAmount().stripTrailingZeros().toPlainString() +
                 currency.name() +
                 BALANCE_DELIMITER +
-                denominationsStr;
+                joinDenominations(balance.getDenominations());
     }
 
     private CurrencyBalance parseBalance(final String balanceStr, final Currency currency) {
@@ -57,18 +54,11 @@ public class CashierSerializer extends BaseFileSerializer<Cashier> {
             String[] parts = balanceStr.split(BALANCE_DELIMITER);
             if (parts.length != 2) return null;
 
-            // Remove currency suffix from amount
             String amountStr = parts[0].replace(currency.name(), EMPTY_STRING);
             BigDecimal total = new BigDecimal(amountStr);
 
-            Map<? extends Denomination, Integer> denominations;
-            if (currency == Currency.BGN) {
-                denominations = parseDenominations(parts[1], BgnDenomination.class);
-            } else {
-                denominations = parseDenominations(parts[1], EurDenomination.class);
-            }
-
-            return new CurrencyBalance(denominations, total);
+            Map<Denomination, Integer> denominations = parseDenominations(parts[1], currency);
+            return new CurrencyBalance(currency, denominations, total);
         } catch (Exception e) {
             return null;
         }

@@ -9,6 +9,7 @@ import java.util.Map;
 @Data
 @AllArgsConstructor
 public class CurrencyBalance {
-    private Map<? extends Denomination, Integer> denominations;
+    private Currency currency;
+    private Map<Denomination, Integer> denominations;
     private BigDecimal totalAmount;
 }

@@ -1,8 +1,11 @@
 package org.myapp.cashdesk.model;
 
+import lombok.Getter;
+
 import java.math.BigDecimal;
 
-public enum EurDenomination implements Denomination{
+@Getter
+public enum EurDenomination implements Denomination {
     // Coins
     ONE_CENT(new BigDecimal("0.01")),
     TWO_CENTS(new BigDecimal("0.02")),
@@ -26,10 +29,6 @@ public enum EurDenomination implements Denomination{
 
     EurDenomination(BigDecimal value) {
         this.value = value;
-    }
-
-    public BigDecimal getValue() {
-        return value;
     }
 
     @Override

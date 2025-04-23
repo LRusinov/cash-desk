@@ -5,10 +5,12 @@ import java.util.Arrays;
 
 public interface Denomination {
     BigDecimal getValue();
+
     Currency getCurrency();
 
     final class Lookup {
-        private Lookup() {}
+        private Lookup() {
+        }
 
         public static <E extends Enum<E> & Denomination> E fromValue(
                 BigDecimal value,

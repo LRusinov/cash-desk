@@ -13,23 +13,24 @@ public abstract class BaseFileSerializer<T> implements FileSerializer<T> {
     protected static final String ITEM_DELIMITER = ",";
     protected static final String DENOMINATION_DELIMITER = "x";
 
-    protected BaseFileSerializer() {}
+    protected BaseFileSerializer() {
+    }
 
-    protected String joinFields(String... fields) {
+    protected String joinFields(final String... fields) {
         return String.join(FIELD_DELIMITER, fields);
     }
 
-    protected String[] splitFields(String line) {
+    protected String[] splitFields(final String line) {
         return line.split(FIELD_DELIMITER);
     }
 
-    protected <E extends Denomination> String joinDenominations(Map<E, Integer> denominations) {
+    protected <E extends Denomination> String joinDenominations(final Map<E, Integer> denominations) {
         return denominations.entrySet().stream()
                 .map(e -> e.getValue() + DENOMINATION_DELIMITER + e.getKey().getValue())
                 .collect(Collectors.joining(ITEM_DELIMITER));
     }
 
-    protected <E extends Enum<E> & Denomination> Map<E, Integer> parseDenominations(String itemsStr, Class<E> enumClass) {
+    protected <E extends Enum<E> & Denomination> Map<E, Integer> parseDenominations(final String itemsStr, final Class<E> enumClass) {
         return Arrays.stream(itemsStr.split(ITEM_DELIMITER))
                 .map(s -> s.split(DENOMINATION_DELIMITER))
                 .collect(Collectors.toMap(

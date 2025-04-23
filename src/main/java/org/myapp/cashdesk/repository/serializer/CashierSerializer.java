@@ -1,6 +1,7 @@
 package org.myapp.cashdesk.repository.serializer;
 
 import org.myapp.cashdesk.model.*;
+
 import java.math.BigDecimal;
 import java.util.Map;
 
@@ -11,7 +12,7 @@ public class CashierSerializer extends BaseFileSerializer<Cashier> {
     public static final String EMPTY_STRING = "";
 
     @Override
-    public String serialize(Cashier cashier) {
+    public String serialize(final Cashier cashier) {
         return joinFields(
                 String.valueOf(cashier.getId()),
                 cashier.getName(),
@@ -21,7 +22,7 @@ public class CashierSerializer extends BaseFileSerializer<Cashier> {
     }
 
     @Override
-    public Cashier parse(String line) {
+    public Cashier parse(final String line) {
         String[] parts = splitFields(line);
         if (parts.length < 4) return null;
 
@@ -37,7 +38,7 @@ public class CashierSerializer extends BaseFileSerializer<Cashier> {
         }
     }
 
-    private String serializeBalance(CurrencyBalance balance, Currency currency) {
+    private String serializeBalance(final CurrencyBalance balance, final Currency currency) {
         if (isNull(balance)) return EMPTY_STRING;
 
         BigDecimal total = balance.getTotalAmount();
@@ -49,7 +50,7 @@ public class CashierSerializer extends BaseFileSerializer<Cashier> {
                 denominationsStr;
     }
 
-    private CurrencyBalance parseBalance(String balanceStr, Currency currency) {
+    private CurrencyBalance parseBalance(final String balanceStr, final Currency currency) {
         if (isNull(balanceStr) || balanceStr.isEmpty()) return null;
 
         try {

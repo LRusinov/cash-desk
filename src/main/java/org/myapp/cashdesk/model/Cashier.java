@@ -5,7 +5,7 @@ import lombok.Data;
 
 @AllArgsConstructor
 @Data
-public class Cashier{
+public class Cashier {
     private long id;
     private String name;
     private CurrencyBalance bgnBalance;

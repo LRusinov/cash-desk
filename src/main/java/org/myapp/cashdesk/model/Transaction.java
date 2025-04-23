@@ -10,8 +10,9 @@ import java.util.Map;
 @Data
 @AllArgsConstructor
 public class Transaction {
-    private long id;
+    private String id;
     private long cashierId;
+    private String cashierName;
     private TransactionType type;
     private Currency currency;
     private BigDecimal amount;

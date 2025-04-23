@@ -1,5 +1,5 @@
 package org.myapp.cashdesk.model;
 
-public enum TransactionType {
+public enum OperationType {
     DEPOSIT, WITHDRAWAL
 }

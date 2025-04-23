@@ -13,7 +13,7 @@ public class Transaction {
     private String id;
     private long cashierId;
     private String cashierName;
-    private TransactionType type;
+    private OperationType type;
     private Currency currency;
     private BigDecimal amount;
     private Map<? extends Denomination, Integer> denominations;

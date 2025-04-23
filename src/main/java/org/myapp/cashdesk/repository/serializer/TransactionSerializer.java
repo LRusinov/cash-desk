@@ -37,7 +37,7 @@ public class TransactionSerializer extends BaseFileSerializer<Transaction> {
                     parts[0],
                     Long.parseLong(parts[1]),
                     parts[2],
-                    TransactionType.valueOf(parts[3]),
+                    OperationType.valueOf(parts[3]),
                     currency,
                     new BigDecimal(parts[5]),
                     parseDenominationsByCurrency(parts[6], currency),

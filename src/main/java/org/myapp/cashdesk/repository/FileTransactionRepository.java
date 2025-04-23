@@ -53,9 +53,10 @@ public class FileTransactionRepository implements TransactionRepository {
         }
     }
 
-    public List<Transaction> findByCashierAndDateRange(final String cashierName, final LocalDateTime from, final LocalDateTime to) {
+    @Override
+    public List<Transaction> findByCashierAndDateRange(long cashierId, LocalDateTime from, LocalDateTime to) {
         return transactionsCache.values().stream()
-                .filter(t -> Objects.equals(t.getCashierName(), cashierName))
+                .filter(t -> Objects.equals(t.getCashierName(), "")) //TODO
                 .filter(t -> from == null || !t.getTimestamp().isBefore(from))
                 .filter(t -> to == null || !t.getTimestamp().isAfter(to))
                 .collect(Collectors.toList());

@@ -2,7 +2,7 @@ package org.myapp.cashdesk.model;
 
 import java.math.BigDecimal;
 
-public enum EurDenomination {
+public enum EurDenomination implements Denomination{
     // Coins
     ONE_CENT(new BigDecimal("0.01")),
     TWO_CENTS(new BigDecimal("0.02")),
@@ -30,6 +30,11 @@ public enum EurDenomination {
 
     public BigDecimal getValue() {
         return value;
+    }
+
+    @Override
+    public Currency getCurrency() {
+        return Currency.EUR;
     }
 }
 

@@ -2,7 +2,7 @@ package org.myapp.cashdesk.model;
 
 import java.math.BigDecimal;
 
-public enum BgnDenomination {
+public enum BgnDenomination implements Denomination{
     // Coins
     ONE_STOTINKA(BigDecimal.valueOf(0.01)),
     TWO_STOTINKI(BigDecimal.valueOf(0.02)),
@@ -27,5 +27,10 @@ public enum BgnDenomination {
 
     public BigDecimal getValue() {
         return value;
+    }
+
+    @Override
+    public Currency getCurrency() {
+        return Currency.BGN;
     }
 }

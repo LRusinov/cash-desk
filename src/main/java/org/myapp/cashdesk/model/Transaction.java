@@ -7,14 +7,14 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Map;
 
-@AllArgsConstructor
 @Data
+@AllArgsConstructor
 public class Transaction {
     private long id;
     private long cashierId;
     private TransactionType type;
     private Currency currency;
     private BigDecimal amount;
-    private Map<Enum<?>, Integer> denominations;
+    private Map<Denomination, Integer> denominations;
     private LocalDateTime timestamp;
 }

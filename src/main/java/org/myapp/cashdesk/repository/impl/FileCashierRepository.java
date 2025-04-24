@@ -1,6 +1,7 @@
 package org.myapp.cashdesk.repository.impl;
 
 import jakarta.annotation.PostConstruct;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.myapp.cashdesk.model.denomination.Currency;
 import org.myapp.cashdesk.model.cashier.Balance;
@@ -8,6 +9,7 @@ import org.myapp.cashdesk.model.cashier.Cashier;
 import org.myapp.cashdesk.repository.CashierRepository;
 import org.myapp.cashdesk.repository.serializer.CashierSerializer;
 import org.myapp.cashdesk.repository.serializer.FileSerializer;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
 import java.io.IOException;
@@ -27,24 +29,27 @@ import static org.myapp.cashdesk.model.denomination.EurDenomination.*;
 
 @Slf4j
 @Repository
+@RequiredArgsConstructor
 public class FileCashierRepository implements CashierRepository {
+
     private static final long INITIAL_ID = 1L;
 
-    private final FileSerializer<Cashier> cashierSerializer;
-    private final Map<Long, Cashier> cashiersMap;
-    private final AtomicLong nextId;
-    private final Path cashiersFile = Path.of("cashiers.txt");
+    @Value("${cash-desk.storage.files.cashiers}")
+    private String cashiersFileName;
+    @Value("${cash-desk.storage.directory}")
+    private String cashierFileDirectory;
 
-    public FileCashierRepository() {
-        this.cashierSerializer = new CashierSerializer();
-        this.cashiersMap = new ConcurrentHashMap<>();
-        this.nextId = new AtomicLong(INITIAL_ID);
-    }
+    private final FileSerializer<Cashier> cashierSerializer = new CashierSerializer();
+    private final Map<Long, Cashier> cashiersMap = new ConcurrentHashMap<>();
+    private final AtomicLong nextId = new AtomicLong(INITIAL_ID);
+    private Path cashiersFilePath;
 
     @PostConstruct
     public void init() {
+        cashiersFilePath = Path.of(cashierFileDirectory, cashiersFileName);
         try {
             log.info("Initialized cashiers");
+            createDirectoryIfMissing();
             loadCashiers();
             initializeDefaultCashiersIfEmpty();
         } catch (Exception e) {
@@ -69,9 +74,9 @@ public class FileCashierRepository implements CashierRepository {
     }
 
     private void loadCashiers() throws IOException {
-        if (!Files.exists(cashiersFile)) return;
+        if (!Files.exists(cashiersFilePath)) return;
 
-        try (Stream<String> lines = Files.lines(cashiersFile)) {
+        try (Stream<String> lines = Files.lines(cashiersFilePath)) {
             lines.map(cashierSerializer::parse)
                     .filter(Objects::nonNull)
                     .forEach(cashier -> {
@@ -102,8 +107,8 @@ public class FileCashierRepository implements CashierRepository {
     private Cashier persistCashier(final Cashier cashier) {
         try {
             Files.writeString(
-                    cashiersFile,
-                    cashierSerializer.serialize(cashier),
+                    cashiersFilePath,
+                    cashierSerializer.serialize(cashier) + System.lineSeparator(),
                     StandardOpenOption.CREATE,
                     StandardOpenOption.APPEND
             );
@@ -116,7 +121,7 @@ public class FileCashierRepository implements CashierRepository {
     private void persistAllCashiers() {
         try {
             Files.write(
-                    cashiersFile,
+                    cashiersFilePath,
                     cashiersMap.values().stream()
                             .map(cashierSerializer::serialize)
                             .toList(),
@@ -125,6 +130,17 @@ public class FileCashierRepository implements CashierRepository {
             );
         } catch (IOException e) {
             throw new UncheckedIOException("Failed to persist cashiers", e);
+        }
+    }
+
+    private void createDirectoryIfMissing() {
+        Path path = Path.of(cashierFileDirectory);
+        if(!Files.exists(path)) {
+            try {
+                Files.createDirectory(path);
+            }catch (IOException e) {
+                throw new UncheckedIOException("Failed to create directory", e);
+            }
         }
     }
 }

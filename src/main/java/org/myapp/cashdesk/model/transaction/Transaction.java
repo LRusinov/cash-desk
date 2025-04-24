@@ -2,6 +2,7 @@ package org.myapp.cashdesk.model.transaction;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.myapp.cashdesk.model.cashier.Balance;
 import org.myapp.cashdesk.model.denomination.Currency;
 import org.myapp.cashdesk.model.denomination.Denomination;
@@ -12,6 +13,7 @@ import java.util.Map;
 
 @Data
 @AllArgsConstructor
+@EqualsAndHashCode
 public class Transaction {
     private String id;
     private long cashierId;

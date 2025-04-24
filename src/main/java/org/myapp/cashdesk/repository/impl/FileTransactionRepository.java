@@ -1,11 +1,13 @@
 package org.myapp.cashdesk.repository.impl;
 
 import jakarta.annotation.PostConstruct;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.myapp.cashdesk.model.transaction.Transaction;
 import org.myapp.cashdesk.repository.TransactionRepository;
 import org.myapp.cashdesk.repository.serializer.FileSerializer;
 import org.myapp.cashdesk.repository.serializer.TransactionSerializer;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
 import java.io.IOException;
@@ -24,20 +26,23 @@ import static java.util.Objects.isNull;
 
 @Slf4j
 @Repository
+@RequiredArgsConstructor
 public class FileTransactionRepository implements TransactionRepository {
     private static final String TRANSACTION_ID_PREFIX = "TX_";
-    private final Path transactionsFile = Path.of("transactions.txt");
+    @Value("${cash-desk.storage.files.transactions}")
+    private String transactionsFileName;
+    @Value("${cash-desk.storage.directory}")
+    private String transactionFileDirectory;
+    private Path transactionsFilePath;
 
-    private final FileSerializer<Transaction> transactionSerializer;
-    private final Map<String, Transaction> transactionsCache;
+    private final FileSerializer<Transaction> transactionSerializer = new TransactionSerializer();
+    private final Map<String, Transaction> transactionsCache = new ConcurrentHashMap<>();
 
-    public FileTransactionRepository() {
-        this.transactionSerializer = new TransactionSerializer();
-        this.transactionsCache = new ConcurrentHashMap<>();
-    }
 
     @PostConstruct
     public void init() {
+        createDirectoryIfMissing();
+        transactionsFilePath = Path.of(transactionFileDirectory, transactionsFileName);
         log.info("Initializing transactions");
         loadTransactions();
     }
@@ -50,7 +55,7 @@ public class FileTransactionRepository implements TransactionRepository {
 
         try {
             Files.writeString(
-                    transactionsFile,
+                    transactionsFilePath,
                     transactionSerializer.serialize(transaction) + System.lineSeparator(),
                     StandardOpenOption.CREATE,
                     StandardOpenOption.APPEND
@@ -90,14 +95,25 @@ public class FileTransactionRepository implements TransactionRepository {
     }
 
     private void loadTransactions() {
-        if (!Files.exists(transactionsFile)) return;
+        if (!Files.exists(transactionsFilePath)) return;
 
-        try (Stream<String> lines = Files.lines(transactionsFile)) {
+        try (Stream<String> lines = Files.lines(transactionsFilePath)) {
             lines.map(transactionSerializer::parse)
                     .filter(Objects::nonNull)
                     .forEach(t -> transactionsCache.put(t.getId(), t));
         } catch (IOException e) {
             throw new UncheckedIOException("Failed to load transactions", e);
+        }
+    }
+
+    private void createDirectoryIfMissing() {
+        Path path = Path.of(transactionFileDirectory);
+        if(!Files.exists(path)) {
+            try {
+                Files.createDirectory(path);
+            }catch (IOException e) {
+                throw new UncheckedIOException("Failed to create directory", e);
+            }
         }
     }
 }

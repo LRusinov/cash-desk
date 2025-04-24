@@ -38,6 +38,7 @@ public abstract class OperationBaseService {
                 request.currency(),
                 request.amount(),
                 getDenominationIntegerMap(request.currency(), request.denominations()),
+                cashier.getBalance(),
                 LocalDateTime.now()
         );
     }

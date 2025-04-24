@@ -2,6 +2,7 @@ package org.myapp.cashdesk.model.transaction;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.myapp.cashdesk.model.cashier.Balance;
 import org.myapp.cashdesk.model.denomination.Currency;
 import org.myapp.cashdesk.model.denomination.Denomination;
 
@@ -19,5 +20,6 @@ public class Transaction {
     private Currency currency;
     private BigDecimal amount;
     private Map<Denomination, Integer> denominations;
+    private Map<Currency, Balance> newCashierBalances;
     private LocalDateTime timestamp;
 }

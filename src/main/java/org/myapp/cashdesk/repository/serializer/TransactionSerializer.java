@@ -24,6 +24,7 @@ public class TransactionSerializer extends BaseFileSerializer<Transaction> {
                     transaction.getCurrency().name(),
                     transaction.getAmount().stripTrailingZeros().toPlainString(),
                     joinDenominations(transaction.getDenominations()),
+                    serializeBalancesMap(transaction.getNewCashierBalances()),
                     transaction.getTimestamp().toString()
             );
         } catch (CashDeskSerializationException e) {
@@ -48,7 +49,8 @@ public class TransactionSerializer extends BaseFileSerializer<Transaction> {
                     currency,
                     new BigDecimal(parts[5]),
                     parseDenominations(parts[6], currency),
-                    LocalDateTime.parse(parts[7])
+                    parseBalances(parts[7]),
+                    LocalDateTime.parse(parts[8])
             );
         } catch (Exception e) {
             throw new CashDeskParseException("Failed to transaction from line: " + line, e);

@@ -15,7 +15,6 @@ import java.nio.file.StandardOpenOption;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static java.util.Objects.isNull;
@@ -24,9 +23,15 @@ import static java.util.Objects.isNull;
 @Repository
 public class FileTransactionRepository implements TransactionRepository {
     private static final String TRANSACTION_ID_PREFIX = "TX_";
-    private final FileSerializer<Transaction> transactionSerializer = new TransactionSerializer();
     private final Path transactionsFile = Path.of("transactions.txt");
-    private final Map<String, Transaction> transactionsCache = new ConcurrentHashMap<>();
+
+    private final FileSerializer<Transaction> transactionSerializer;
+    private final Map<String, Transaction> transactionsCache;
+
+    public FileTransactionRepository() {
+        this.transactionSerializer = new TransactionSerializer();
+        this.transactionsCache = new ConcurrentHashMap<>();
+    }
 
     @PostConstruct
     public void init() {
@@ -60,7 +65,7 @@ public class FileTransactionRepository implements TransactionRepository {
                 .filter(t -> Objects.equals(t.getCashierName(), cashierName))
                 .filter(t -> fromDate == null || !t.getTimestamp().isBefore(fromDate))
                 .filter(t -> toDate == null || !t.getTimestamp().isAfter(toDate))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     private String generateId() {

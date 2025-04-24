@@ -5,11 +5,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.myapp.cashdesk.dto.CashOperationRequestDTO;
 import org.myapp.cashdesk.model.cashier.Balance;
 import org.myapp.cashdesk.model.cashier.Cashier;
+import org.myapp.cashdesk.model.denomination.Currency;
 import org.myapp.cashdesk.model.denomination.Denomination;
 import org.myapp.cashdesk.model.transaction.Transaction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 
 @Slf4j
@@ -19,22 +22,28 @@ import java.util.Map;
 public class DepositService extends OperationBaseService {
 
     private final CashierService cashierService;
-    private final TransactionService transactionService;
 
     public Transaction processDeposit(final CashOperationRequestDTO request) {
-        Cashier cashier = cashierService.findCashier(request.cashierId());
-        Balance cashierBalance = getBalanceForCurrency(cashier, request.currency());
-        Map<Denomination, Integer> denominations = cashierBalance.getDenominations();
+        final Cashier originalCashier = cashierService.findCashier(request.cashierId());
+        final Currency requestedCurrency = request.currency();
+        final Balance originalBalance = getBalanceForCurrency(originalCashier, requestedCurrency);
+        final Map<Denomination, Integer> updatedDenominations = new HashMap<>(originalBalance.getDenominations());
 
-        Map<Denomination, Integer> deposit = getDenominationIntegerMap(request.currency(), request.denominations());
+        final Map<Denomination, Integer> deposit = convertToDenominationIntegerMap(
+                requestedCurrency,
+                request.denominations());
+
         deposit.forEach((denomination, count) -> {
-            Denomination existingDenomination = findMatchingDenomination(denominations.keySet(), denomination);
-            denominations.merge(existingDenomination, count, Integer::sum);
+            Denomination existingDenomination = findDenomination(updatedDenominations.keySet(), denomination);
+            updatedDenominations.merge(existingDenomination, count, Integer::sum);
         });
 
-        cashierBalance.setTotalAmount(cashierBalance.getTotalAmount().add(request.amount()));
-        cashierService.save(cashier);
+        final Balance updatedBalance = new Balance(
+                originalBalance.getTotalAmount().add(request.amount()),
+                Collections.unmodifiableMap(updatedDenominations)
+        );
 
-        return transactionService.save(createTransaction(request, cashier));
+        return createTransaction(request,
+                cashierService.save(originalCashier.withUpdatedCurrencyBalance(requestedCurrency, updatedBalance)));
     }
 }

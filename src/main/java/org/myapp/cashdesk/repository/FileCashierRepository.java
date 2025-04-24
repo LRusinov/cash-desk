@@ -1,6 +1,7 @@
 package org.myapp.cashdesk.repository;
 
 import jakarta.annotation.PostConstruct;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.myapp.cashdesk.model.denomination.Currency;
 import org.myapp.cashdesk.model.cashier.Balance;
@@ -22,18 +23,23 @@ import java.util.stream.Stream;
 
 import static org.myapp.cashdesk.model.denomination.BgnDenomination.FIFTY_LEVA;
 import static org.myapp.cashdesk.model.denomination.BgnDenomination.TEN_LEVA;
-import static org.myapp.cashdesk.model.denomination.EurDenomination.ONE_HUNDRED_EUROS;
-import static org.myapp.cashdesk.model.denomination.EurDenomination.TWENTY_EUROS;
+import static org.myapp.cashdesk.model.denomination.EurDenomination.*;
 
 @Slf4j
 @Repository
 public class FileCashierRepository implements CashierRepository {
     private static final long INITIAL_ID = 1L;
 
-    private final FileSerializer<Cashier> cashierSerializer = new CashierSerializer();
-    private final Map<Long, Cashier> cashiersMap = new ConcurrentHashMap<>();
+    private final FileSerializer<Cashier> cashierSerializer;
+    private final Map<Long, Cashier> cashiersMap;
+    private final AtomicLong nextId;
     private final Path cashiersFile = Path.of("cashiers.txt");
-    private final AtomicLong nextId = new AtomicLong(INITIAL_ID);
+
+    public FileCashierRepository() {
+        this.cashierSerializer = new CashierSerializer();
+        this.cashiersMap = new ConcurrentHashMap<>();
+        this.nextId = new AtomicLong(INITIAL_ID);
+    }
 
     @PostConstruct
     public void init() {
@@ -63,8 +69,8 @@ public class FileCashierRepository implements CashierRepository {
             cashier.setId(nextId.getAndIncrement());
         }
         cashiersMap.put(cashier.getId(), cashier);
-        persistAllCashiers();
-        return cashier;
+
+        return persistCashier(cashier);
     }
 
     private void loadCashiers() throws IOException {
@@ -85,9 +91,9 @@ public class FileCashierRepository implements CashierRepository {
 
         final List<String> defaultCashiers = List.of("MARTINA", "PETER", "LINDA");
         final Balance defaultBalanceBgn = new Balance(BigDecimal.valueOf(1000),
-                Map.of(FIFTY_LEVA, 10, TEN_LEVA, 50));
+                Map.of(TEN_LEVA, 50, FIFTY_LEVA, 10));
         final Balance defaultBalanceEur = new Balance(BigDecimal.valueOf(2000),
-                Map.of(ONE_HUNDRED_EUROS, 10, TWENTY_EUROS, 50));
+                Map.of(TEN_EUROS, 100, FIFTY_EUROS, 20));
 
         log.info("Initializing default cashiers");
         defaultCashiers.forEach(name -> {
@@ -96,6 +102,19 @@ public class FileCashierRepository implements CashierRepository {
             cashiersMap.put(id, cashier);
         });
         persistAllCashiers();
+    }
+
+    private Cashier persistCashier(final Cashier cashier) {
+        try {
+            Files.writeString(
+                    cashiersFile,
+                    cashierSerializer.serialize(cashier),
+                    StandardOpenOption.APPEND
+            );
+        } catch (IOException e) {
+            throw new UncheckedIOException("Failed to persist cashiers", e);
+        }
+        return cashier;
     }
 
     private void persistAllCashiers() {

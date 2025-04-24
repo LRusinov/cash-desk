@@ -16,8 +16,8 @@ import static org.myapp.cashdesk.utils.DenominationUtils.getDenomination;
 
 public abstract class OperationBaseService {
 
-    protected Denomination findMatchingDenomination(Iterable<Denomination> existingDenominations,
-                                                  Denomination target) {
+    protected Denomination findDenomination(Iterable<Denomination> existingDenominations,
+                                            Denomination target) {
         for (Denomination d : existingDenominations) {
             if (d.getValue().compareTo(target.getValue()) == 0) {
                 return d;
@@ -38,13 +38,13 @@ public abstract class OperationBaseService {
                 request.operationType(),
                 request.currency(),
                 request.amount(),
-                getDenominationIntegerMap(request.currency(), request.denominations()),
+                convertToDenominationIntegerMap(request.currency(), request.denominations()),
                 cashier.getBalance(),
                 LocalDateTime.now()
         );
     }
 
-    protected static Map<Denomination, Integer> getDenominationIntegerMap(Currency currency, Map<BigDecimal, Integer> denominations) {
+    protected static Map<Denomination, Integer> convertToDenominationIntegerMap(Currency currency, Map<BigDecimal, Integer> denominations) {
         return denominations.entrySet()
                 .stream()
                 .collect(Collectors.toMap(

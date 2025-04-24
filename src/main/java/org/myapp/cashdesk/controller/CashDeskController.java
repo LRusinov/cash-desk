@@ -1,5 +1,7 @@
 package org.myapp.cashdesk.controller;
 
+import jakarta.validation.constraints.PastOrPresent;
+import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
 import org.myapp.cashdesk.dto.response.CashierHistoryDTO;
 import org.myapp.cashdesk.service.CashDeskBalanceService;
@@ -22,9 +24,15 @@ public class CashDeskController {
     private final CashDeskBalanceService cashDeskBalanceService;
 
     @GetMapping("/cash-balance")
-    public ResponseEntity<List<CashierHistoryDTO>> cashBalance(@RequestParam(required = false) String cashierName,
-                                                               @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateFrom,
-                                                               @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateTo) {
+    public ResponseEntity<List<CashierHistoryDTO>> cashBalance(@RequestParam(required = false)
+                                                               @Size(min = 2, message = "Cashier name must be at least 2 characters long") final String cashierName,
+
+                                                               @RequestParam(required = false)
+                                                               @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) final LocalDate dateFrom,
+
+                                                               @RequestParam(required = false)
+                                                               @PastOrPresent(message = "Date to must be in the past or present")
+                                                               @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) final LocalDate dateTo) {
         return new ResponseEntity<>(cashDeskBalanceService.getCashierBalance(cashierName, dateFrom, dateTo), HttpStatus.OK);
     }
 }

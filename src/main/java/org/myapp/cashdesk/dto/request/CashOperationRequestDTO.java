@@ -11,10 +11,21 @@ import java.util.Map;
 
 
 public record CashOperationRequestDTO(
-        @NotNull Long cashierId,
+        @NotNull(message = "Cashier ID cannot be null")
+        @Positive(message = "Cashier ID must be positive number")
+        Long cashierId,
+
+        @NotNull(message = "Currency cannot be null")
         @NotNull Currency currency,
-        @NotNull OperationType operationType,
-        @NotNull @Positive BigDecimal amount,
-        @NotNull Map<@Positive BigDecimal, @PositiveOrZero Integer> denominations
+
+        @NotNull(message = "Operation type cannot be null")
+        OperationType operationType,
+
+        @NotNull(message = "Amount cannot be null")
+        @Positive(message = "Amount must be positive")
+        BigDecimal amount,
+
+        @NotNull
+        Map<@Positive BigDecimal, @PositiveOrZero Integer> denominations
 ) {
 }

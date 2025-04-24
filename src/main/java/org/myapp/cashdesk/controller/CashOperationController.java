@@ -1,5 +1,6 @@
 package org.myapp.cashdesk.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.myapp.cashdesk.dto.request.CashOperationRequestDTO;
 import org.myapp.cashdesk.dto.response.TransactionDTO;
@@ -17,7 +18,7 @@ public class CashOperationController {
     private final CashDeskOperationService cashDeskOperationService;
 
     @PostMapping("/cash-operation")
-    public TransactionDTO cashOperation(@RequestBody final CashOperationRequestDTO request) {
+    public TransactionDTO cashOperation(@RequestBody @Valid final CashOperationRequestDTO request) {
         return cashDeskOperationService.processOperation(request);
     }
 }

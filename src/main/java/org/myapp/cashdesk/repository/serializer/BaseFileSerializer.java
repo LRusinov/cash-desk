@@ -27,7 +27,7 @@ public abstract class BaseFileSerializer<T> implements FileSerializer<T> {
 
     protected <E extends Denomination> String joinDenominations(final Map<E, Integer> denominations) {
         return denominations.entrySet().stream()
-                .map(e -> e.getValue() + DENOMINATION_DELIMITER + e.getKey().getValue())
+                .map(e -> e.getValue() + DENOMINATION_DELIMITER + e.getKey().getValue().stripTrailingZeros().toPlainString())
                 .collect(Collectors.joining(ITEM_DELIMITER));
     }
 

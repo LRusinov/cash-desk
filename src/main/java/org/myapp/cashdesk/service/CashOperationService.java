@@ -29,7 +29,7 @@ public class CashOperationService {
         Cashier cashier = cashierRepository.findById(request.cashierId())
                 .orElseThrow(() -> new IllegalArgumentException("Cashier not found"));
 
-        CurrencyBalance currentBalance = getBalanceForCurrency(cashier, request.currency());
+        Balance currentBalance = getBalanceForCurrency(cashier, request.currency());
         if (request.operationType() == OperationType.WITHDRAWAL) {
             processWithdrawal(currentBalance, request);
         } else {
@@ -55,9 +55,9 @@ public class CashOperationService {
         }
     }
 
-    private void processWithdrawal(final CurrencyBalance cashierBalance, final CashOperationRequestDTO request) {
+    private void processWithdrawal(final Balance cashierBalance, final CashOperationRequestDTO request) {
         Map<Denomination, Integer> cashierDenomination = cashierBalance.getDenominations();
-        Map<Denomination, Integer> requestedBalance = getDenominationIntegerMap(cashierBalance.getCurrency(), request.denominations());
+        Map<Denomination, Integer> requestedBalance = getDenominationIntegerMap(request.currency(), request.denominations());
         requestedBalance.forEach((denomination, requestedCount) -> {
             Denomination existingDenomination = findMatchingDenomination(cashierDenomination.keySet(), denomination);
             int availableCount = cashierDenomination.getOrDefault(existingDenomination, 0);
@@ -72,9 +72,9 @@ public class CashOperationService {
         cashierBalance.setTotalAmount(cashierBalance.getTotalAmount().subtract(request.amount()));
     }
 
-    private void processDeposit(final CurrencyBalance cashierBalance, final CashOperationRequestDTO request) {
+    private void processDeposit(final Balance cashierBalance, final CashOperationRequestDTO request) {
         Map<Denomination, Integer> denominations = cashierBalance.getDenominations();
-        Map<Denomination, Integer> deposit = getDenominationIntegerMap(cashierBalance.getCurrency(), request.denominations());
+        Map<Denomination, Integer> deposit = getDenominationIntegerMap(request.currency(), request.denominations());
         deposit.forEach((denomination, count) -> {
             Denomination existingDenomination = findMatchingDenomination(denominations.keySet(), denomination);
             denominations.merge(existingDenomination, count, Integer::sum);
@@ -93,8 +93,8 @@ public class CashOperationService {
         return DenominationFactory.createDenomination(target.getCurrency(), target.getValue());
     }
 
-    private CurrencyBalance getBalanceForCurrency(final Cashier cashier, final Currency currency) {
-        return currency == Currency.BGN ? cashier.getBgnBalance() : cashier.getEurBalance();
+    private Balance getBalanceForCurrency(final Cashier cashier, final Currency currency) {
+        return cashier.getBalance().get(currency);
     }
 
     private Transaction createTransaction(final CashOperationRequestDTO request, Cashier cashier) {

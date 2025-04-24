@@ -83,15 +83,15 @@ public class FileCashierRepository implements CashierRepository {
         if (!cashiersMap.isEmpty()) return;
 
         final List<String> defaultCashiers = List.of("MARTINA", "PETER", "LINDA");
-        final CurrencyBalance defaultBalanceBgn = new CurrencyBalance(Currency.BGN,
+        final Balance defaultBalanceBgn = new Balance(
                 Map.of(FIFTY_LEVA, 10, TEN_LEVA, 50), BigDecimal.valueOf(1000));
-        final CurrencyBalance defaultBalanceEur = new CurrencyBalance(Currency.EUR,
+        final Balance defaultBalanceEur = new Balance(
                 Map.of(ONE_HUNDRED_EUROS, 10, TWENTY_EUROS, 50), BigDecimal.valueOf(2000));
 
         log.info("Initializing default cashiers");
         defaultCashiers.forEach(name -> {
             long id = nextId.getAndIncrement();
-            Cashier cashier = new Cashier(id, name, defaultBalanceBgn, defaultBalanceEur);
+            Cashier cashier = new Cashier(id, name, Map.of(Currency.BGN, defaultBalanceBgn, Currency.EUR, defaultBalanceEur));
             cashiersMap.put(id, cashier);
         });
         persistAllCashiers();

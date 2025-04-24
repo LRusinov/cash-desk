@@ -22,7 +22,7 @@ import static java.util.Objects.isNull;
 
 @Slf4j
 @Repository
-public final class FileTransactionRepository implements TransactionRepository {
+public class FileTransactionRepository implements TransactionRepository {
     private static final String TRANSACTION_ID_PREFIX = "TX_";
     private final FileSerializer<Transaction> transactionSerializer = new TransactionSerializer();
     private final Path transactionsFile = Path.of("transactions.txt");

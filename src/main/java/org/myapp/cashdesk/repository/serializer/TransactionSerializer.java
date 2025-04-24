@@ -7,7 +7,7 @@ import org.myapp.cashdesk.model.transaction.OperationType;
 import org.myapp.cashdesk.model.transaction.Transaction;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 public class TransactionSerializer extends BaseFileSerializer<Transaction> {
 
@@ -50,7 +50,7 @@ public class TransactionSerializer extends BaseFileSerializer<Transaction> {
                     new BigDecimal(parts[5]),
                     parseDenominations(parts[6], currency),
                     parseBalances(parts[7]),
-                    LocalDateTime.parse(parts[8])
+                    Instant.parse(parts[8])
             );
         } catch (Exception e) {
             throw new CashDeskParseException("Failed to transaction from line: " + line, e);

@@ -109,6 +109,7 @@ public class FileCashierRepository implements CashierRepository {
             Files.writeString(
                     cashiersFile,
                     cashierSerializer.serialize(cashier),
+                    StandardOpenOption.CREATE,
                     StandardOpenOption.APPEND
             );
         } catch (IOException e) {

@@ -1,11 +1,10 @@
 package org.myapp.cashdesk.dto;
 
-import org.myapp.cashdesk.model.denomination.Denomination;
+import org.myapp.cashdesk.model.cashier.Balance;
 
-import java.util.List;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.Map;
 
-public record CashBalanceResponseDTO(String cashierName,
-                                     Map<Denomination, Integer>  balances,
-                                     List<TransactionDTO> transactions) {
+public record CashBalanceResponseDTO(LocalDateTime onDate, Map<BigDecimal, Balance> balances) {
 }

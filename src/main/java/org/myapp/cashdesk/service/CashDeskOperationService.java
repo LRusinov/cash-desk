@@ -16,6 +16,8 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static org.myapp.cashdesk.utils.DenominationUtils.convertAllKeysToBigDecimal;
+
 @Slf4j
 @Service
 @Transactional
@@ -68,14 +70,13 @@ public class CashDeskOperationService {
     private Map<Currency, BalanceDTO> convertToDto(Map<Currency, Balance> balanceMap) {
         return Collections.unmodifiableMap(
                 balanceMap.entrySet().stream()
-                .collect(Collectors.toMap(
-                        Map.Entry::getKey,
-                        entry -> convertBalanceToDTO(entry.getValue())
-                )));
+                        .collect(Collectors.toMap(
+                                Map.Entry::getKey,
+                                entry -> convertBalanceToDTO(entry.getValue())
+                        )));
     }
 
     private BalanceDTO convertBalanceToDTO(Balance balance) {
-        return new BalanceDTO(balance.getTotalAmount(), balance.getDenominations()
-        );
+        return new BalanceDTO(balance.getTotalAmount(), convertAllKeysToBigDecimal(balance.getDenominations()));
     }
 }

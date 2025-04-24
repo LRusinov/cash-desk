@@ -8,8 +8,10 @@ import org.myapp.cashdesk.repository.TransactionRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -23,7 +25,9 @@ public class TransactionService {
         return transactionRepository.save(transaction);
     }
 
-    public List<Transaction> findByCashierAndDateRange(final String cashierName, final LocalDateTime fromDate, final LocalDateTime toDate) {
-        return transactionRepository.findByCashierAndDateRange(cashierName, fromDate, toDate);
+    public Map<Long, List<Transaction>> findByCashierAndDateRange(final String cashierName, final LocalDate fromDate,
+                                                                  final LocalDate toDate) {
+        return transactionRepository.findByCashierAndDateRange(cashierName, fromDate, toDate).stream()
+                .collect(Collectors.groupingBy(Transaction::getCashierId));
     }
 }

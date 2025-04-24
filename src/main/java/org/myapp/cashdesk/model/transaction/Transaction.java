@@ -7,7 +7,7 @@ import org.myapp.cashdesk.model.denomination.Currency;
 import org.myapp.cashdesk.model.denomination.Denomination;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.Map;
 
 @Data
@@ -21,5 +21,5 @@ public class Transaction {
     private BigDecimal amount;
     private Map<Denomination, Integer> denominations;
     private Map<Currency, Balance> newCashierBalances;
-    private LocalDateTime timestamp;
+    private Instant timestamp;
 }

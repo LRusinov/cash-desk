@@ -12,7 +12,9 @@ import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
-import java.time.LocalDateTime;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Stream;
@@ -60,12 +62,26 @@ public class FileTransactionRepository implements TransactionRepository {
     }
 
     @Override
-    public List<Transaction> findByCashierAndDateRange(final String cashierName,final LocalDateTime fromDate, final LocalDateTime toDate) {
+    public List<Transaction> findByCashierAndDateRange(final String cashierName, final LocalDate fromDate, final LocalDate toDate) {
         return transactionsCache.values().stream()
-                .filter(t -> Objects.equals(t.getCashierName(), cashierName))
-                .filter(t -> fromDate == null || !t.getTimestamp().isBefore(fromDate))
-                .filter(t -> toDate == null || !t.getTimestamp().isAfter(toDate))
+                .filter(t -> isNull(cashierName) || Objects.equals(t.getCashierName(), cashierName))
+                .filter(t -> isNull(fromDate) || isAfterOrEqual(fromDate, t.getTimestamp()))
+                .filter(t -> isNull(toDate) || isBeforeOrEqual(toDate, t.getTimestamp()))
                 .toList();
+    }
+
+    private static boolean isBeforeOrEqual(final LocalDate date, final Instant timestamp) {
+        LocalDate transactionDate = timestamp
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate();
+        return !transactionDate.isAfter(date);
+    }
+
+    private static boolean isAfterOrEqual(final LocalDate date, final Instant timestamp) {
+        LocalDate transactionDate = timestamp
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate();
+        return !transactionDate.isBefore(date);
     }
 
     private String generateId() {

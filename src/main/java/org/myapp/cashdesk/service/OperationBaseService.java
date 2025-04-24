@@ -1,7 +1,7 @@
 package org.myapp.cashdesk.service;
 
 import lombok.AllArgsConstructor;
-import org.myapp.cashdesk.dto.CashOperationRequestDTO;
+import org.myapp.cashdesk.dto.request.CashOperationRequestDTO;
 import org.myapp.cashdesk.model.cashier.Balance;
 import org.myapp.cashdesk.model.cashier.Cashier;
 import org.myapp.cashdesk.model.denomination.Currency;

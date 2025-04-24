@@ -1,8 +1,8 @@
 package org.myapp.cashdesk.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.myapp.cashdesk.dto.CashOperationRequestDTO;
-import org.myapp.cashdesk.dto.TransactionDTO;
+import org.myapp.cashdesk.dto.request.CashOperationRequestDTO;
+import org.myapp.cashdesk.dto.response.TransactionDTO;
 import org.myapp.cashdesk.service.CashDeskOperationService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

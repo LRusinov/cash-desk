@@ -2,9 +2,9 @@ package org.myapp.cashdesk.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.myapp.cashdesk.dto.BalanceDTO;
-import org.myapp.cashdesk.dto.CashOperationRequestDTO;
-import org.myapp.cashdesk.dto.TransactionDTO;
+import org.myapp.cashdesk.dto.response.BalanceDTO;
+import org.myapp.cashdesk.dto.request.CashOperationRequestDTO;
+import org.myapp.cashdesk.dto.response.TransactionDTO;
 import org.myapp.cashdesk.model.cashier.Balance;
 import org.myapp.cashdesk.model.denomination.Currency;
 import org.myapp.cashdesk.model.transaction.Transaction;

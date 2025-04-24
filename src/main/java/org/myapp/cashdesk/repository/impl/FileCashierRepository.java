@@ -1,11 +1,11 @@
-package org.myapp.cashdesk.repository;
+package org.myapp.cashdesk.repository.impl;
 
 import jakarta.annotation.PostConstruct;
-import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.myapp.cashdesk.model.denomination.Currency;
 import org.myapp.cashdesk.model.cashier.Balance;
 import org.myapp.cashdesk.model.cashier.Cashier;
+import org.myapp.cashdesk.repository.CashierRepository;
 import org.myapp.cashdesk.repository.serializer.CashierSerializer;
 import org.myapp.cashdesk.repository.serializer.FileSerializer;
 import org.springframework.stereotype.Repository;
@@ -51,11 +51,6 @@ public class FileCashierRepository implements CashierRepository {
             log.error("Initialization failed", e);
             throw new UncheckedIOException(new IOException("Repository initialization failed", e));
         }
-    }
-
-    @Override
-    public List<Cashier> findAll() {
-        return new ArrayList<>(cashiersMap.values());
     }
 
     @Override

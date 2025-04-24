@@ -1,7 +1,7 @@
 package org.myapp.cashdesk.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.myapp.cashdesk.dto.CashierHistoryDTO;
+import org.myapp.cashdesk.dto.response.CashierHistoryDTO;
 import org.myapp.cashdesk.service.CashBalanceService;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;

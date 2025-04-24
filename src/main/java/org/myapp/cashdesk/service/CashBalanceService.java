@@ -1,9 +1,9 @@
 package org.myapp.cashdesk.service;
 
 import lombok.RequiredArgsConstructor;
-import org.myapp.cashdesk.dto.BalanceDTO;
-import org.myapp.cashdesk.dto.BalanceOnDateDTO;
-import org.myapp.cashdesk.dto.CashierHistoryDTO;
+import org.myapp.cashdesk.dto.response.BalanceDTO;
+import org.myapp.cashdesk.dto.response.BalanceOnDateDTO;
+import org.myapp.cashdesk.dto.response.CashierHistoryDTO;
 import org.myapp.cashdesk.model.cashier.Balance;
 import org.myapp.cashdesk.model.denomination.Currency;
 import org.myapp.cashdesk.model.transaction.Transaction;

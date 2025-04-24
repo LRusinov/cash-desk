@@ -1,4 +1,4 @@
-package org.myapp.cashdesk.dto;
+package org.myapp.cashdesk.dto.response;
 
 import java.math.BigDecimal;
 import java.util.Map;

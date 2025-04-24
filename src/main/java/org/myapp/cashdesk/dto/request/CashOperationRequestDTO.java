@@ -1,4 +1,4 @@
-package org.myapp.cashdesk.dto;
+package org.myapp.cashdesk.dto.request;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;

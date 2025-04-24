@@ -2,8 +2,9 @@ package org.myapp.cashdesk.repository;
 
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
-import org.myapp.cashdesk.model.*;
-import org.myapp.cashdesk.model.Currency;
+import org.myapp.cashdesk.model.denomination.Currency;
+import org.myapp.cashdesk.model.cashier.Balance;
+import org.myapp.cashdesk.model.cashier.Cashier;
 import org.myapp.cashdesk.repository.serializer.CashierSerializer;
 import org.myapp.cashdesk.repository.serializer.FileSerializer;
 import org.springframework.stereotype.Repository;
@@ -19,10 +20,10 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Stream;
 
-import static org.myapp.cashdesk.model.BgnDenomination.FIFTY_LEVA;
-import static org.myapp.cashdesk.model.BgnDenomination.TEN_LEVA;
-import static org.myapp.cashdesk.model.EurDenomination.ONE_HUNDRED_EUROS;
-import static org.myapp.cashdesk.model.EurDenomination.TWENTY_EUROS;
+import static org.myapp.cashdesk.model.denomination.BgnDenomination.FIFTY_LEVA;
+import static org.myapp.cashdesk.model.denomination.BgnDenomination.TEN_LEVA;
+import static org.myapp.cashdesk.model.denomination.EurDenomination.ONE_HUNDRED_EUROS;
+import static org.myapp.cashdesk.model.denomination.EurDenomination.TWENTY_EUROS;
 
 @Slf4j
 @Repository

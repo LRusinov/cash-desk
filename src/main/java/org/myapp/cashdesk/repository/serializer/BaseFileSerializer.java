@@ -2,9 +2,9 @@ package org.myapp.cashdesk.repository.serializer;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import org.myapp.cashdesk.model.Currency;
-import org.myapp.cashdesk.model.Denomination;
-import org.myapp.cashdesk.model.DenominationFactory;
+import org.myapp.cashdesk.model.denomination.Currency;
+import org.myapp.cashdesk.model.denomination.Denomination;
+import org.myapp.cashdesk.model.denomination.DenominationFactory;
 
 import java.math.BigDecimal;
 import java.util.Arrays;

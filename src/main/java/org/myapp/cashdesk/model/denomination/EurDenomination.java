@@ -1,4 +1,4 @@
-package org.myapp.cashdesk.model;
+package org.myapp.cashdesk.model.denomination;
 
 import lombok.Getter;
 

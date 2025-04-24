@@ -1,8 +1,8 @@
 package org.myapp.cashdesk.service;
 
 import lombok.RequiredArgsConstructor;
-import org.myapp.cashdesk.model.Cashier;
-import org.myapp.cashdesk.model.Transaction;
+import org.myapp.cashdesk.model.cashier.Cashier;
+import org.myapp.cashdesk.model.transaction.Transaction;
 import org.myapp.cashdesk.repository.CashierRepository;
 import org.myapp.cashdesk.repository.TransactionRepository;
 import org.springframework.stereotype.Service;

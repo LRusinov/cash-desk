@@ -4,8 +4,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
-import org.myapp.cashdesk.model.Currency;
-import org.myapp.cashdesk.model.OperationType;
+import org.myapp.cashdesk.model.denomination.Currency;
+import org.myapp.cashdesk.model.transaction.OperationType;
 
 import java.math.BigDecimal;
 import java.util.Map;

@@ -2,7 +2,7 @@ package org.myapp.cashdesk.repository;
 
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
-import org.myapp.cashdesk.model.Transaction;
+import org.myapp.cashdesk.model.transaction.Transaction;
 import org.myapp.cashdesk.repository.serializer.FileSerializer;
 import org.myapp.cashdesk.repository.serializer.TransactionSerializer;
 import org.springframework.stereotype.Repository;

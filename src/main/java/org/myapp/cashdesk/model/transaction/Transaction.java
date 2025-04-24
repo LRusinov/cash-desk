@@ -1,7 +1,9 @@
-package org.myapp.cashdesk.model;
+package org.myapp.cashdesk.model.transaction;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.myapp.cashdesk.model.denomination.Currency;
+import org.myapp.cashdesk.model.denomination.Denomination;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;

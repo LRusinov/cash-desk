@@ -1,7 +1,8 @@
-package org.myapp.cashdesk.model;
+package org.myapp.cashdesk.model.cashier;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.myapp.cashdesk.model.denomination.Currency;
 
 import java.util.Map;
 

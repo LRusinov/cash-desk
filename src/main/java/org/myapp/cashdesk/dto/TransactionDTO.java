@@ -1,7 +1,7 @@
 package org.myapp.cashdesk.dto;
 
-import org.myapp.cashdesk.model.Currency;
-import org.myapp.cashdesk.model.OperationType;
+import org.myapp.cashdesk.model.denomination.Currency;
+import org.myapp.cashdesk.model.transaction.OperationType;
 
 import java.math.BigDecimal;
 import java.time.Instant;

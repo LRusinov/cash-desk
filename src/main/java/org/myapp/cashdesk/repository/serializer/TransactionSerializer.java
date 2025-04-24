@@ -1,6 +1,9 @@
 package org.myapp.cashdesk.repository.serializer;
 
-import org.myapp.cashdesk.model.*;
+import org.myapp.cashdesk.model.denomination.Currency;
+import org.myapp.cashdesk.model.transaction.OperationType;
+import org.myapp.cashdesk.model.transaction.Transaction;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 

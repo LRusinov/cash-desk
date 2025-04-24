@@ -1,6 +1,9 @@
 package org.myapp.cashdesk.repository.serializer;
 
-import org.myapp.cashdesk.model.*;
+import org.myapp.cashdesk.model.cashier.Balance;
+import org.myapp.cashdesk.model.cashier.Cashier;
+import org.myapp.cashdesk.model.denomination.Currency;
+import org.myapp.cashdesk.model.denomination.Denomination;
 
 import java.math.BigDecimal;
 import java.util.Arrays;

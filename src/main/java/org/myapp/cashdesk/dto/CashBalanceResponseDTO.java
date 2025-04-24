@@ -1,6 +1,6 @@
 package org.myapp.cashdesk.dto;
 
-import org.myapp.cashdesk.model.Denomination;
+import org.myapp.cashdesk.model.denomination.Denomination;
 
 import java.util.List;
 import java.util.Map;

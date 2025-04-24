@@ -5,13 +5,14 @@ import org.myapp.cashdesk.model.cashier.Balance;
 import org.myapp.cashdesk.model.cashier.Cashier;
 import org.myapp.cashdesk.model.denomination.Currency;
 import org.myapp.cashdesk.model.denomination.Denomination;
-import org.myapp.cashdesk.model.denomination.DenominationFactory;
 import org.myapp.cashdesk.model.transaction.Transaction;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import static org.myapp.cashdesk.utils.DenominationUtils.getDenomination;
 
 public abstract class OperationBaseService {
 
@@ -22,7 +23,7 @@ public abstract class OperationBaseService {
                 return d;
             }
         }
-        return DenominationFactory.createDenomination(target.getCurrency(), target.getValue());
+        return getDenomination(target.getCurrency(), target.getValue());
     }
 
     protected Balance getBalanceForCurrency(final Cashier cashier, final Currency currency) {
@@ -47,7 +48,7 @@ public abstract class OperationBaseService {
         return denominations.entrySet()
                 .stream()
                 .collect(Collectors.toMap(
-                        entry -> DenominationFactory.createDenomination(currency, entry.getKey()),
+                        entry -> getDenomination(currency, entry.getKey()),
                         Map.Entry::getValue
                 ));
     }

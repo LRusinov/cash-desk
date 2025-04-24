@@ -7,7 +7,6 @@ import org.myapp.cashdesk.exception.CashDeskSerializationException;
 import org.myapp.cashdesk.model.cashier.Balance;
 import org.myapp.cashdesk.model.denomination.Currency;
 import org.myapp.cashdesk.model.denomination.Denomination;
-import org.myapp.cashdesk.model.denomination.DenominationFactory;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
@@ -15,6 +14,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import static java.util.Objects.isNull;
+import static org.myapp.cashdesk.utils.DenominationUtils.getDenomination;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public abstract class BaseFileSerializer<T> implements FileSerializer<T> {
@@ -50,7 +50,7 @@ public abstract class BaseFileSerializer<T> implements FileSerializer<T> {
         return Arrays.stream(denominationsStr.split(ITEM_DELIMITER))
                 .map(s -> s.split(DENOMINATION_DELIMITER))
                 .collect(Collectors.toMap(
-                        parts -> DenominationFactory.createDenomination(currency, new BigDecimal(parts[1])),
+                        parts -> getDenomination(currency, new BigDecimal(parts[1])),
                         parts -> Integer.parseInt(parts[0])
                 ));
     }

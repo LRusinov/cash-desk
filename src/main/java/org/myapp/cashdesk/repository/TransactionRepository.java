@@ -8,7 +8,7 @@ import java.util.List;
 public interface TransactionRepository {
     Transaction save(Transaction transaction);
 
-    List<Transaction> findByCashierAndDateRange(long cashierId,
+    List<Transaction> findByCashierAndDateRange(String cashierName,
                                                 LocalDateTime from,
                                                 LocalDateTime to);
 }

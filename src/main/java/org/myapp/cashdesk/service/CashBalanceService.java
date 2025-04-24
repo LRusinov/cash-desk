@@ -22,8 +22,8 @@ public class CashBalanceService {
         return cashierRepository.findById(cashierId);
     }
 
-    public List<Transaction> getCashierTransactions(long cashierId, LocalDateTime from, LocalDateTime to) {
-        return transactionRepository.findByCashierAndDateRange(cashierId, from, to);
+    public List<Transaction> getCashierTransactions(final String cashierName, final LocalDateTime fromDate, final LocalDateTime toDate) {
+        return transactionRepository.findByCashierAndDateRange(cashierName, fromDate, toDate);
     }
 
     public List<Cashier> getAllCashiers() {

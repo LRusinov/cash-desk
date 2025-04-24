@@ -18,6 +18,6 @@ public class Transaction {
     private OperationType type;
     private Currency currency;
     private BigDecimal amount;
-    private Map<? extends Denomination, Integer> denominations;
+    private Map<Denomination, Integer> denominations;
     private LocalDateTime timestamp;
 }

@@ -22,7 +22,8 @@ public enum BgnDenomination implements Denomination {
     FIVE_LEVA(BigDecimal.valueOf(5)),
     TEN_LEVA(BigDecimal.valueOf(10)),
     TWENTY_LEVA(BigDecimal.valueOf(20)),
-    FIFTY_LEVA(BigDecimal.valueOf(50));
+    FIFTY_LEVA(BigDecimal.valueOf(50)),
+    HUNDRED_LEVA(BigDecimal.valueOf(100));
 
     @Getter
     private final BigDecimal value;

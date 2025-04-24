@@ -27,7 +27,7 @@ import static org.myapp.cashdesk.model.denomination.EurDenomination.TWENTY_EUROS
 
 @Slf4j
 @Repository
-public final class FileCashierRepository implements CashierRepository {
+public class FileCashierRepository implements CashierRepository {
     private static final long INITIAL_ID = 1L;
 
     private final FileSerializer<Cashier> cashierSerializer = new CashierSerializer();
@@ -84,10 +84,10 @@ public final class FileCashierRepository implements CashierRepository {
         if (!cashiersMap.isEmpty()) return;
 
         final List<String> defaultCashiers = List.of("MARTINA", "PETER", "LINDA");
-        final Balance defaultBalanceBgn = new Balance(
-                Map.of(FIFTY_LEVA, 10, TEN_LEVA, 50), BigDecimal.valueOf(1000));
-        final Balance defaultBalanceEur = new Balance(
-                Map.of(ONE_HUNDRED_EUROS, 10, TWENTY_EUROS, 50), BigDecimal.valueOf(2000));
+        final Balance defaultBalanceBgn = new Balance(BigDecimal.valueOf(1000),
+                Map.of(FIFTY_LEVA, 10, TEN_LEVA, 50));
+        final Balance defaultBalanceEur = new Balance(BigDecimal.valueOf(2000),
+                Map.of(ONE_HUNDRED_EUROS, 10, TWENTY_EUROS, 50));
 
         log.info("Initializing default cashiers");
         defaultCashiers.forEach(name -> {

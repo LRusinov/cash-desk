@@ -10,6 +10,6 @@ import java.util.Map;
 @Data
 @AllArgsConstructor
 public class Balance {
-    private Map<Denomination, Integer> denominations;
     private BigDecimal totalAmount;
+    private Map<Denomination, Integer> denominations;
 }

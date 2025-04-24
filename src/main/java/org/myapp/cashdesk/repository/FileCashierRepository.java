@@ -27,7 +27,7 @@ import static org.myapp.cashdesk.model.denomination.EurDenomination.TWENTY_EUROS
 
 @Slf4j
 @Repository
-public class FileCashierRepository implements CashierRepository {
+public final class FileCashierRepository implements CashierRepository {
     private static final long INITIAL_ID = 1L;
 
     private final FileSerializer<Cashier> cashierSerializer = new CashierSerializer();
@@ -38,9 +38,9 @@ public class FileCashierRepository implements CashierRepository {
     @PostConstruct
     public void init() {
         try {
+            log.info("Initialized cashiers");
             loadCashiers();
             initializeDefaultCashiersIfEmpty();
-            log.info("Initialized with {} cashiers", cashiersMap.size());
         } catch (Exception e) {
             log.error("Initialization failed", e);
             throw new UncheckedIOException(new IOException("Repository initialization failed", e));

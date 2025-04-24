@@ -16,12 +16,13 @@ import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static java.util.Objects.isNull;
 
 @Slf4j
 @Repository
-public class FileTransactionRepository implements TransactionRepository {
+public final class FileTransactionRepository implements TransactionRepository {
     private static final String TRANSACTION_ID_PREFIX = "TX_";
     private final FileSerializer<Transaction> transactionSerializer = new TransactionSerializer();
     private final Path transactionsFile = Path.of("transactions.txt");
@@ -29,8 +30,8 @@ public class FileTransactionRepository implements TransactionRepository {
 
     @PostConstruct
     public void init() {
+        log.info("Initializing transactions");
         loadTransactions();
-        log.info("Initialized with {} transactions", transactionsCache.size());
     }
 
     @Override
@@ -54,11 +55,11 @@ public class FileTransactionRepository implements TransactionRepository {
     }
 
     @Override
-    public List<Transaction> findByCashierAndDateRange(long cashierId, LocalDateTime from, LocalDateTime to) {
+    public List<Transaction> findByCashierAndDateRange(final String cashierName,final LocalDateTime fromDate, final LocalDateTime toDate) {
         return transactionsCache.values().stream()
-                .filter(t -> Objects.equals(t.getCashierName(), "")) //TODO
-                .filter(t -> from == null || !t.getTimestamp().isBefore(from))
-                .filter(t -> to == null || !t.getTimestamp().isAfter(to))
+                .filter(t -> Objects.equals(t.getCashierName(), cashierName))
+                .filter(t -> fromDate == null || !t.getTimestamp().isBefore(fromDate))
+                .filter(t -> toDate == null || !t.getTimestamp().isAfter(toDate))
                 .collect(Collectors.toList());
     }
 
@@ -69,7 +70,7 @@ public class FileTransactionRepository implements TransactionRepository {
     private void loadTransactions() {
         if (!Files.exists(transactionsFile)) return;
 
-        try (var lines = Files.lines(transactionsFile)) {
+        try (Stream<String> lines = Files.lines(transactionsFile)) {
             lines.map(transactionSerializer::parse)
                     .filter(Objects::nonNull)
                     .forEach(t -> transactionsCache.put(t.getId(), t));

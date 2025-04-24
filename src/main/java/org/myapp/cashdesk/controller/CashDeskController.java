@@ -2,7 +2,7 @@ package org.myapp.cashdesk.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.myapp.cashdesk.dto.response.CashierHistoryDTO;
-import org.myapp.cashdesk.service.CashBalanceService;
+import org.myapp.cashdesk.service.CashDeskBalanceService;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,12 +19,12 @@ import java.util.List;
 @RequestMapping("/api/v1")
 public class CashDeskController {
 
-    private final CashBalanceService cashBalanceService;
+    private final CashDeskBalanceService cashDeskBalanceService;
 
     @GetMapping("/cash-balance")
     public ResponseEntity<List<CashierHistoryDTO>> cashBalance(@RequestParam(required = false) String cashierName,
                                                                @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateFrom,
                                                                @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateTo) {
-        return new ResponseEntity<>(cashBalanceService.getCashierBalance(cashierName, dateFrom, dateTo), HttpStatus.OK);
+        return new ResponseEntity<>(cashDeskBalanceService.getCashierBalance(cashierName, dateFrom, dateTo), HttpStatus.OK);
     }
 }

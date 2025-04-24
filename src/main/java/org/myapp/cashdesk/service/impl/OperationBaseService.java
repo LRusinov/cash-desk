@@ -1,4 +1,4 @@
-package org.myapp.cashdesk.service;
+package org.myapp.cashdesk.service.impl;
 
 import lombok.AllArgsConstructor;
 import org.myapp.cashdesk.dto.request.CashOperationRequestDTO;

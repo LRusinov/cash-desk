@@ -21,7 +21,7 @@ import static org.myapp.cashdesk.utils.DenominationUtils.convertAllKeysToBigDeci
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class CashBalanceService {
+public class CashDeskBalanceService {
 
     private final TransactionService transactionService;
 

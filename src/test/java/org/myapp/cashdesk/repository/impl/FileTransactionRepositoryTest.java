@@ -81,7 +81,7 @@ class FileTransactionRepositoryTest {
         assertEquals(TEST_TRANSACTION_ID, saved.getId());
     }
 
-    private Transaction createTestTransaction(String id, String cashierName, Instant timestamp) {
+    private Transaction createTestTransaction(final String id, final String cashierName, final Instant timestamp) {
         return new Transaction(
                 id,
                 1,

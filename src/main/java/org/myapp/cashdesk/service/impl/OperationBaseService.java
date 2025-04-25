@@ -6,6 +6,7 @@ import org.myapp.cashdesk.model.cashier.Balance;
 import org.myapp.cashdesk.model.cashier.Cashier;
 import org.myapp.cashdesk.model.denomination.Currency;
 import org.myapp.cashdesk.model.denomination.Denomination;
+import org.myapp.cashdesk.model.transaction.OperationType;
 import org.myapp.cashdesk.model.transaction.Transaction;
 
 import java.math.BigDecimal;
@@ -40,10 +41,10 @@ public abstract class OperationBaseService {
                 null,
                 cashier.getId(),
                 cashier.getName(),
-                request.operationType(),
-                request.currency(),
+                OperationType.valueOf(request.operationType()),
+                Currency.valueOf(request.currency()),
                 request.amount(),
-                convertToDenominationIntegerMap(request.currency(), request.denominations()),
+                convertToDenominationIntegerMap(Currency.valueOf(request.currency()), request.denominations()),
                 cashier.getBalance(),
                 Instant.now()
         );

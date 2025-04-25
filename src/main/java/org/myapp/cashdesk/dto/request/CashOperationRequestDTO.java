@@ -1,10 +1,9 @@
 package org.myapp.cashdesk.dto.request;
 
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
-import org.myapp.cashdesk.model.denomination.Currency;
-import org.myapp.cashdesk.model.transaction.OperationType;
 
 import java.math.BigDecimal;
 import java.util.Map;
@@ -23,11 +22,11 @@ public record CashOperationRequestDTO(
         @Positive(message = "Cashier ID must be positive number")
         Long cashierId,
 
-        @NotNull(message = "Currency cannot be null")
-        Currency currency,
+        @NotBlank(message = "Currency cannot be null or empty")
+        String currency,
 
-        @NotNull(message = "Operation type cannot be null")
-        OperationType operationType,
+        @NotBlank(message = "Operation type cannot be null or empty")
+        String operationType,
 
         @NotNull(message = "Amount cannot be null")
         @Positive(message = "Amount must be positive")

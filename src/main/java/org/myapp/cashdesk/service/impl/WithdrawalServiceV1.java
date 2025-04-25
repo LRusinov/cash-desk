@@ -38,7 +38,7 @@ public class WithdrawalServiceV1 extends OperationBaseService implements Withdra
     public Transaction processWithdrawal(final CashOperationRequestDTO request) {
         log.info("processWithdrawal");
         Cashier originalCashier = cashierService.findCashier(request.cashierId());
-        Currency requestedCurrency = request.currency();
+        Currency requestedCurrency = Currency.valueOf(request.currency());
 
         Balance originalBalance = originalCashier.getBalance().get(requestedCurrency);
         Map<Denomination, Integer> updatedDenominations = calculateNewDenominations(

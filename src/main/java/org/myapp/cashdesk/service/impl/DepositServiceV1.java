@@ -37,7 +37,7 @@ public class DepositServiceV1 extends OperationBaseService implements DepositSer
     public Transaction processDeposit(final CashOperationRequestDTO request) {
         log.info("Processing deposit request");
         final Cashier originalCashier = cashierService.findCashier(request.cashierId());
-        final Currency requestedCurrency = request.currency();
+        final Currency requestedCurrency = Currency.valueOf(request.currency());
         final Balance originalBalance = getBalanceForCurrency(originalCashier, requestedCurrency);
         final Map<Denomination, Integer> updatedDenominations = new HashMap<>(originalBalance.getDenominations());
 

@@ -21,6 +21,7 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
+import static org.myapp.cashdesk.model.transaction.OperationType.WITHDRAWAL;
 
 @ExtendWith(MockitoExtension.class)
 class WithdrawalServiceV1Test {
@@ -58,7 +59,7 @@ class WithdrawalServiceV1Test {
         assertNotNull(result);
         assertEquals(CASHIER_ID, result.getCashierId());
         assertEquals(CASHIER_NAME, result.getCashierName());
-        assertEquals(OperationType.WITHDRAWAL, result.getType());
+        assertEquals(WITHDRAWAL, result.getType());
         assertEquals(CURRENCY, result.getCurrency());
         assertEquals(AMOUNT, result.getAmount());
         assertEquals(DENOMINATIONS, result.getDenominations());
@@ -148,8 +149,8 @@ class WithdrawalServiceV1Test {
     private CashOperationRequestDTO createRequest() {
         return new CashOperationRequestDTO(
                 CASHIER_ID,
-                CURRENCY,
-                OperationType.WITHDRAWAL,
+                CURRENCY.name(),
+                WITHDRAWAL.name(),
                 AMOUNT,
                 BIG_DECIMAL_DENOMINATIONS
         );

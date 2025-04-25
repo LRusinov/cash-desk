@@ -11,7 +11,6 @@ import org.myapp.cashdesk.model.cashier.Cashier;
 import org.myapp.cashdesk.model.denomination.Currency;
 import org.myapp.cashdesk.model.denomination.Denomination;
 import org.myapp.cashdesk.model.denomination.EurDenomination;
-import org.myapp.cashdesk.model.transaction.OperationType;
 import org.myapp.cashdesk.model.transaction.Transaction;
 import org.myapp.cashdesk.service.CashierService;
 
@@ -20,6 +19,7 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
+import static org.myapp.cashdesk.model.transaction.OperationType.DEPOSIT;
 
 @ExtendWith(MockitoExtension.class)
 class DepositServiceV1Test {
@@ -55,7 +55,7 @@ class DepositServiceV1Test {
         assertNotNull(result);
         assertEquals(CASHIER_ID, result.getCashierId());
         assertEquals(CASHIER_NAME, result.getCashierName());
-        assertEquals(OperationType.DEPOSIT, result.getType());
+        assertEquals(DEPOSIT, result.getType());
         assertEquals(CURRENCY, result.getCurrency());
         assertEquals(AMOUNT, result.getAmount());
         assertEquals(expectedDenominations, result.getDenominations());
@@ -110,8 +110,8 @@ class DepositServiceV1Test {
     private CashOperationRequestDTO createRequest() {
         return new CashOperationRequestDTO(
                 CASHIER_ID,
-                CURRENCY,
-                OperationType.DEPOSIT,
+                CURRENCY.name(),
+                DEPOSIT.name(),
                 AMOUNT,
                 DENOMINATIONS
         );

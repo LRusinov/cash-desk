@@ -90,8 +90,8 @@ class CashDeskOperationServiceV1Test {
     private CashOperationRequestDTO createRequest(OperationType operationType) {
         return new CashOperationRequestDTO(
                 CASHIER_ID,
-                CURRENCY,
-                operationType,
+                CURRENCY.name(),
+                operationType.name(),
                 AMOUNT,
                 BIG_DECIMAL_DENOMINATIONS
         );

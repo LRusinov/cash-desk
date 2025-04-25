@@ -8,6 +8,7 @@ import org.myapp.cashdesk.dto.response.TransactionDTO;
 import org.myapp.cashdesk.exception.CashDeskValidationException;
 import org.myapp.cashdesk.model.cashier.Balance;
 import org.myapp.cashdesk.model.denomination.Currency;
+import org.myapp.cashdesk.model.transaction.OperationType;
 import org.myapp.cashdesk.model.transaction.Transaction;
 import org.myapp.cashdesk.service.CashDeskOperationService;
 import org.myapp.cashdesk.service.DepositService;
@@ -46,7 +47,7 @@ public class CashDeskOperationServiceV1 implements CashDeskOperationService {
         validateRequestDto(request);
 
         Transaction transaction =
-                switch (request.operationType()) {
+                switch (OperationType.valueOf(request.operationType())) {
                     case WITHDRAWAL -> withdrawalService.processWithdrawal(request);
                     case DEPOSIT -> depositService.processDeposit(request);
                 };
@@ -56,6 +57,14 @@ public class CashDeskOperationServiceV1 implements CashDeskOperationService {
 
     private void validateRequestDto(final CashOperationRequestDTO request) {
         log.info("Validating request");
+
+        try{
+            Currency.fromStringAlternative(request.currency());
+            OperationType.fromStringAlternative(request.operationType());
+        }catch (IllegalArgumentException e){
+            throw new CashDeskValidationException(e.getMessage());
+        }
+
         if (request.denominations().isEmpty()) {
             throw new CashDeskValidationException("At least one denomination must be specified!");
         }

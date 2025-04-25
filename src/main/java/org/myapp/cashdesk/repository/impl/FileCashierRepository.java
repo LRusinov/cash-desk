@@ -27,6 +27,9 @@ import static org.myapp.cashdesk.model.denomination.BgnDenomination.FIFTY_LEVA;
 import static org.myapp.cashdesk.model.denomination.BgnDenomination.TEN_LEVA;
 import static org.myapp.cashdesk.model.denomination.EurDenomination.*;
 
+/**
+ * Responsible for cashier being saved or read to/from file
+ */
 @Slf4j
 @Repository
 @RequiredArgsConstructor
@@ -58,11 +61,23 @@ public class FileCashierRepository implements CashierRepository {
         }
     }
 
+    /**
+     * Finds Cashier by given id.
+     *
+     * @param id unique identifier of the cashier
+     * @return Optional of the found cashier or empty optional if none found
+     */
     @Override
     public Optional<Cashier> findById(final long id) {
         return Optional.ofNullable(cashiersMap.get(id));
     }
 
+    /**
+     * Saves given cashier to file.
+     *
+     * @param cashier cashier to be saved
+     * @return the saved cashier
+     */
     @Override
     public synchronized Cashier save(final Cashier cashier) {
         if (cashier.getId() == 0) {

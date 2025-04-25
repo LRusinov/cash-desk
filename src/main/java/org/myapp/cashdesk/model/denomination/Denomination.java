@@ -3,6 +3,9 @@ package org.myapp.cashdesk.model.denomination;
 import java.math.BigDecimal;
 import java.util.Arrays;
 
+/**
+ * Denomination interface containing denomination's main methods
+ */
 public interface Denomination {
     BigDecimal getValue();
 

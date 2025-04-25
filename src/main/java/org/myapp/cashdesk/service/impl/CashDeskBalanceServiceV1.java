@@ -1,5 +1,6 @@
 package org.myapp.cashdesk.service.impl;
 
+import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import org.myapp.cashdesk.dto.response.BalanceDTO;
 import org.myapp.cashdesk.dto.response.BalanceOnDateDTO;
@@ -20,6 +21,9 @@ import java.util.stream.Collectors;
 
 import static org.myapp.cashdesk.utils.DenominationUtils.convertAllKeysToBigDecimal;
 
+/**
+ * Service is responsible for handling different operations with the cashier's balances
+ */
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -27,7 +31,17 @@ public class CashDeskBalanceServiceV1 implements CashDeskBalanceService {
 
     private final TransactionService transactionService;
 
-    public List<CashierHistoryDTO> getCashierBalanceByNameAndPeriod(String cashierName, LocalDate dateFrom, LocalDate dateTo) {
+    /**
+     * Gets cashiers balances history by optionally given cashier's name and date range.
+     *
+     * @param cashierName name of the cashier
+     * @param dateFrom start date from which the search stars
+     * @param dateTo end date to which the search ends
+     * @return list of found cashier's balances history
+     */
+    public List<CashierHistoryDTO> getCashierBalanceByNameAndPeriod(@Nullable final String cashierName,
+                                                                    @Nullable final LocalDate dateFrom,
+                                                                    @Nullable final LocalDate dateTo) {
         return transactionService.findByCashierNameAndDateRange(cashierName, dateFrom, dateTo).entrySet()
                 .stream()
                 .map(entry -> new CashierHistoryDTO(entry.getKey(),

@@ -9,6 +9,9 @@ import java.util.Collections;
 import java.util.EnumMap;
 import java.util.Map;
 
+/**
+ * Represents cashier with all of his characteristics and balances
+ */
 @AllArgsConstructor
 @Data
 @EqualsAndHashCode

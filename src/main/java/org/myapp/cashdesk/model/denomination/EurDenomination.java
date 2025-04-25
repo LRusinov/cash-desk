@@ -8,6 +8,9 @@ import java.util.Map;
 
 import static java.util.Objects.isNull;
 
+/**
+ * Represents all denomination of EUR currency
+ */
 public enum EurDenomination implements Denomination {
     // Coins
     ONE_CENT(BigDecimal.valueOf(0.01)),

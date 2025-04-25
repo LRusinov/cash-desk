@@ -1,6 +1,6 @@
 package org.myapp.cashdesk.exception;
 
-import org.myapp.cashdesk.dto.CashDeskErrorValidationResponseDTO;
+import org.myapp.cashdesk.dto.response.CashDeskErrorValidationResponseDTO;
 import org.myapp.cashdesk.dto.CashDeskErrorDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

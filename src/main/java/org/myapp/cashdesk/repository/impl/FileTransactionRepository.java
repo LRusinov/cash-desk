@@ -1,5 +1,6 @@
 package org.myapp.cashdesk.repository.impl;
 
+import jakarta.annotation.Nullable;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,6 +25,9 @@ import java.util.stream.Stream;
 
 import static java.util.Objects.isNull;
 
+/**
+ * Responsible for transactions being saved or read to/from file
+ */
 @Slf4j
 @Repository
 @RequiredArgsConstructor
@@ -47,6 +51,12 @@ public class FileTransactionRepository implements TransactionRepository {
         loadTransactions();
     }
 
+    /**
+     * Saves given transaction to file.
+     *
+     * @param transaction transaction to be saved
+     * @return the save transaction
+     */
     @Override
     public synchronized Transaction save(final Transaction transaction) {
         if (isNull(transaction.getId())) {
@@ -67,8 +77,16 @@ public class FileTransactionRepository implements TransactionRepository {
         }
     }
 
+    /**
+     * Find cashiers balance by given filters.
+     *
+     * @param cashierName name of the cashier
+     * @param fromDate date from which will be searched
+     * @param toDate date to which will be searched
+     * @return list of the found transactions after the applied filters(if given any) or empty list if non found
+     */
     @Override
-    public List<Transaction> findByCashierAndDateRange(final String cashierName, final LocalDate fromDate, final LocalDate toDate) {
+    public List<Transaction> findByCashierAndDateRange(@Nullable final String cashierName,@Nullable final LocalDate fromDate,@Nullable final LocalDate toDate) {
         return transactionsCache.values().stream()
                 .filter(t -> isNull(cashierName) || Objects.equals(t.getCashierName(), cashierName))
                 .filter(t -> isNull(fromDate) || isAfterOrEqual(fromDate, t.getTimestamp()))

@@ -7,6 +7,9 @@ import org.myapp.cashdesk.model.cashier.Cashier;
 
 import static java.util.Objects.isNull;
 
+/**
+ * This class is responsible for cashier serialization and parsing.
+ */
 @Slf4j
 public class CashierSerializer extends BaseFileSerializer<Cashier> {
     private static final int NUMBER_OF_CASHIER_FIELDS = 3;
@@ -15,6 +18,13 @@ public class CashierSerializer extends BaseFileSerializer<Cashier> {
     private static final int CASHIER_BALANCE_INDEX = 2;
 
 
+    /**
+     * Serializes cashier.
+     *
+     * @param cashier cashier to be serialized
+     * @return serialize cashier as string
+     * @throws CashDeskSerializationException if the given Cashier is null
+     */
     @Override
     public String serialize(final Cashier cashier) {
         if (isNull(cashier)) {
@@ -28,12 +38,16 @@ public class CashierSerializer extends BaseFileSerializer<Cashier> {
         );
     }
 
+    /**
+     * Parses cashier from line.
+     *
+     * @param line line to be parsed
+     * @return parsed cashier
+     * @throws CashDeskParseException if the given line is null
+     */
     @Override
     public Cashier parse(final String line) {
-        if (isNull(line)) {
-            throw new CashDeskParseException("Input line cannot be null!");
-        }
-
+        checkIfLineIsNull(line);
         String[] parts = splitFields(line);
         validateCorrectNumberOfFields(NUMBER_OF_CASHIER_FIELDS, parts.length, line);
 

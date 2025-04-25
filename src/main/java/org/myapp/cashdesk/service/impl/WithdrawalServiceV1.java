@@ -18,6 +18,9 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Service is responsible for handling WITHDRAWAL operations.
+ */
 @Slf4j
 @RequiredArgsConstructor
 @Service
@@ -26,6 +29,12 @@ public class WithdrawalServiceV1 extends OperationBaseService implements Withdra
 
     private final CashierService cashierService;
 
+    /**
+     * Processes given withdrawal operation.
+     *
+     * @param request contains all data needed for the processing of the withdrawal operation
+     * @return object which contains the transaction information for the executed withdrawal operation
+     */
     public Transaction processWithdrawal(final CashOperationRequestDTO request) {
         Cashier originalCashier = cashierService.findCashier(request.cashierId());
         Currency requestedCurrency = request.currency();

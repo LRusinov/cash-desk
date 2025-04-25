@@ -8,7 +8,9 @@ import java.util.Map;
 
 import static java.util.Objects.isNull;
 
-
+/**
+ * Represents all denomination of BGN currency
+ */
 public enum BgnDenomination implements Denomination {
     // Coins
     ONE_STOTINKA(BigDecimal.valueOf(0.01)),

@@ -11,6 +11,9 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
+/**
+ * Filter responsible for handling custom header containing the api key.
+ */
 @Component
 @RequiredArgsConstructor
 public class ApiKeyAuthFilter extends OncePerRequestFilter {

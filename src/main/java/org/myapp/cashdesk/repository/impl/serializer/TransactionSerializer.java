@@ -1,5 +1,6 @@
 package org.myapp.cashdesk.repository.impl.serializer;
 
+import lombok.extern.slf4j.Slf4j;
 import org.myapp.cashdesk.exception.CashDeskParseException;
 import org.myapp.cashdesk.exception.CashDeskSerializationException;
 import org.myapp.cashdesk.model.denomination.Currency;
@@ -9,6 +10,12 @@ import org.myapp.cashdesk.model.transaction.Transaction;
 import java.math.BigDecimal;
 import java.time.Instant;
 
+import static java.util.Objects.isNull;
+
+/**
+ * This class is responsible for transaction serialization and parsing.
+ */
+@Slf4j
 public class TransactionSerializer extends BaseFileSerializer<Transaction> {
     private static final int NUMBER_OF_TRANSACTION_FIELDS = 8;
     private static final int TRANSACTION_CURRENCY_INDEX = 4;
@@ -21,8 +28,19 @@ public class TransactionSerializer extends BaseFileSerializer<Transaction> {
     private static final int NEW_CASHIER_BALANCE_INDEX = 7;
     private static final int TRANSACTION_TIMESTAMP_INDEX = 8;
 
+    /**
+     * Serializes transaction.
+     *
+     * @param transaction transaction to be serialized
+     * @return serialized transaction
+     * @throws CashDeskSerializationException if the given transaction is null
+     */
     @Override
     public String serialize(final Transaction transaction) {
+        if (isNull(transaction)) {
+            throw new CashDeskSerializationException("Failed to serialize transaction! Cashier can not be null!");
+        }
+
         try {
             return joinFields(
                     transaction.getId(),
@@ -42,8 +60,16 @@ public class TransactionSerializer extends BaseFileSerializer<Transaction> {
         }
     }
 
+    /**
+     * Parses transaction from line.
+     *
+     * @param line line to be parsed
+     * @return parsed transaction
+     * @throws CashDeskParseException if the given line is null
+     */
     @Override
     public Transaction parse(final String line) {
+        checkIfLineIsNull(line);
         String[] parts = splitFields(line);
         validateCorrectNumberOfFields(NUMBER_OF_TRANSACTION_FIELDS, parts.length, line);
 

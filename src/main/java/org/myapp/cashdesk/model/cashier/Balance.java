@@ -8,6 +8,9 @@ import org.myapp.cashdesk.model.denomination.Denomination;
 import java.math.BigDecimal;
 import java.util.Map;
 
+/**
+ * Represents cashier's balance
+ */
 @Data
 @AllArgsConstructor
 @EqualsAndHashCode

@@ -17,6 +17,9 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Service is responsible for handling DEPOSIT operations.
+ */
 @Slf4j
 @Service
 @Transactional
@@ -25,6 +28,12 @@ public class DepositServiceV1 extends OperationBaseService implements DepositSer
 
     private final CashierService cashierService;
 
+    /**
+     * Processes given deposit operation.
+     *
+     * @param request contains all data needed for the processing of the deposit operation
+     * @return object which contains the transaction information for the executed deposit operation
+     */
     public Transaction processDeposit(final CashOperationRequestDTO request) {
         final Cashier originalCashier = cashierService.findCashier(request.cashierId());
         final Currency requestedCurrency = request.currency();

@@ -17,6 +17,10 @@ import java.util.stream.Collectors;
 import static java.util.Objects.isNull;
 import static org.myapp.cashdesk.utils.DenominationUtils.getDenomination;
 
+/**
+ * Base Serializer class containing common methods
+ * @param <T> type of the object which will be serialized
+ */
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public abstract class BaseFileSerializer<T> implements FileSerializer<T> {
     private static final String FIELD_DELIMITER_REGEX = "\\|";
@@ -128,6 +132,12 @@ public abstract class BaseFileSerializer<T> implements FileSerializer<T> {
         if (partsLength < expectedNumberOfFields) {
             throw new CashDeskParseException(String.format("Invalid line format! The expected format is '%s' but got '%s'", expectedFormat, actual)
             );
+        }
+    }
+
+    protected static void checkIfLineIsNull(String line) {
+        if (isNull(line)) {
+            throw new CashDeskParseException("Input line cannot be null!");
         }
     }
 

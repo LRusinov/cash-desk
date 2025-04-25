@@ -23,6 +23,9 @@ import java.util.stream.Collectors;
 
 import static org.myapp.cashdesk.utils.DenominationUtils.convertAllKeysToBigDecimal;
 
+/**
+ * Service is responsible for handling all Cash Desk operations
+ */
 @Slf4j
 @Service
 @Transactional
@@ -33,6 +36,12 @@ public class CashDeskOperationServiceV1 implements CashDeskOperationService {
     private final DepositService depositService;
     private final TransactionService transactionService;
 
+    /**
+     * Processes the cash desk operation
+     *
+     * @param request requested operation and all need data to process it
+     * @return object containing all the information of the executed transaction
+     */
     public TransactionDTO processOperation(final CashOperationRequestDTO request) {
         validateRequestDto(request);
 

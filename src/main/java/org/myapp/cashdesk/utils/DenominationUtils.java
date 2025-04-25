@@ -12,8 +12,20 @@ import java.math.BigDecimal;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * Denomination utils class which contains common denomination methods.
+ */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class DenominationUtils {
+
+    /**
+     * Finds denomination constant by given value.
+     *
+     * @param currency currency whose constant is searched for
+     * @param value target value
+     * @return denomination constant
+     * @throws IllegalArgumentException if value is null
+     */
     public static Denomination getDenomination(final Currency currency, final BigDecimal value) {
         return switch (currency) {
             case BGN -> BgnDenomination.findByValue(value);

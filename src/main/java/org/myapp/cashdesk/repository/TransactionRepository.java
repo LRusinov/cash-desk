@@ -5,6 +5,9 @@ import org.myapp.cashdesk.model.transaction.Transaction;
 import java.time.LocalDate;
 import java.util.List;
 
+/**
+ * Base transaction repository interface for needed CRUD operations.
+ */
 public interface TransactionRepository {
     Transaction save(Transaction transaction);
 

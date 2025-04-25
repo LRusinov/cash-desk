@@ -15,6 +15,9 @@ import java.util.stream.Collectors;
 
 import static org.myapp.cashdesk.utils.DenominationUtils.getDenomination;
 
+/**
+ * Operation base class containing common operation methods.
+ */
 @AllArgsConstructor
 public abstract class OperationBaseService {
 

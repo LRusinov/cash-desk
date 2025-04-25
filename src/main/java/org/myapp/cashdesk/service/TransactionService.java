@@ -6,6 +6,9 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Interface contain all need method for managing transactions.
+ */
 public interface TransactionService {
     Transaction save(Transaction transaction);
 

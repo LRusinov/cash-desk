@@ -9,7 +9,15 @@ import org.myapp.cashdesk.model.transaction.OperationType;
 import java.math.BigDecimal;
 import java.util.Map;
 
-
+/**
+ * Request DTO containing all information needed for processing operation
+ *
+ * @param cashierId unique identifier  of the cashier
+ * @param currency currency of the operation
+ * @param operationType type of the operation
+ * @param amount amount which will be processed during theoperation
+ * @param denominations denomination of the amount
+ */
 public record CashOperationRequestDTO(
         @NotNull(message = "Cashier ID cannot be null")
         @Positive(message = "Cashier ID must be positive number")

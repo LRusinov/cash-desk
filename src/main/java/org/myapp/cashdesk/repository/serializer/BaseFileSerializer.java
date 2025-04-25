@@ -44,7 +44,7 @@ public abstract class BaseFileSerializer<T> implements FileSerializer<T> {
                 .collect(Collectors.joining(ITEM_DELIMITER));
     }
 
-    protected Map<Denomination, Integer> parseDenominations(String denominationsStr, Currency currency) {
+    protected Map<Denomination, Integer> parseDenominations(final String denominationsStr,final Currency currency) {
         if (denominationsStr.isEmpty()) return Map.of();
 
         return Arrays.stream(denominationsStr.split(ITEM_DELIMITER))

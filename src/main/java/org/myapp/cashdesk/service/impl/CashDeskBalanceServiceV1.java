@@ -49,7 +49,7 @@ public class CashDeskBalanceServiceV1 implements CashDeskBalanceService {
         return new BalanceDTO(balance.getTotalAmount(), convertAllKeysToBigDecimal(balance.getDenominations()));
     }
 
-    private List<BalanceOnDateDTO> convertToBalanceOnDateDTOList(List<Transaction> entry) {
+    private List<BalanceOnDateDTO> convertToBalanceOnDateDTOList(final List<Transaction> entry) {
         return entry.stream().map(this::getBalanceOnDateDto).toList();
     }
 

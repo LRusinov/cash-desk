@@ -71,7 +71,7 @@ public class CashDeskOperationServiceV1 implements CashDeskOperationService {
                 transaction.getTimestamp());
     }
 
-    private Map<Currency, BalanceDTO> convertToDto(Map<Currency, Balance> balanceMap) {
+    private Map<Currency, BalanceDTO> convertToDto(final Map<Currency, Balance> balanceMap) {
         return Collections.unmodifiableMap(
                 balanceMap.entrySet().stream()
                         .collect(Collectors.toMap(
@@ -80,7 +80,7 @@ public class CashDeskOperationServiceV1 implements CashDeskOperationService {
                         )));
     }
 
-    private BalanceDTO convertBalanceToDTO(Balance balance) {
+    private BalanceDTO convertBalanceToDTO(final Balance balance) {
         return new BalanceDTO(balance.getTotalAmount(), convertAllKeysToBigDecimal(balance.getDenominations()));
     }
 }

@@ -45,8 +45,8 @@ public class WithdrawalServiceV1 extends OperationBaseService implements Withdra
                 cashierService.save(originalCashier.withUpdatedCurrencyBalance(requestedCurrency, updatedBalance)));
     }
 
-    private Map<Denomination, Integer> calculateNewDenominations(Map<Denomination, Integer> cashierDenominations,
-                                                                 Map<Denomination, Integer> requestedDenominations, Currency currency) {
+    private Map<Denomination, Integer> calculateNewDenominations(final Map<Denomination, Integer> cashierDenominations,
+                                                                 final Map<Denomination, Integer> requestedDenominations, Currency currency) {
         Map<Denomination, Integer> newBalance = new HashMap<>();
 
         requestedDenominations.forEach((requestedDenomination, requestedCount) -> {
@@ -66,7 +66,7 @@ public class WithdrawalServiceV1 extends OperationBaseService implements Withdra
         return Collections.unmodifiableMap(newBalance);
     }
 
-    private static void validateDenominationAvailability(Currency currency, Denomination requestedDenomination, Integer requestedCount, int availableCount) {
+    private static void validateDenominationAvailability(final Currency currency, final Denomination requestedDenomination, final int requestedCount, final int availableCount) {
         if (availableCount < requestedCount) {
             throw new IllegalArgumentException(
                     "Not enough " + requestedDenomination.getValue() + " " + currency + " banknotes");

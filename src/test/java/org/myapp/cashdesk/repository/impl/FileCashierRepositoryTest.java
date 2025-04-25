@@ -9,6 +9,7 @@ import org.myapp.cashdesk.model.cashier.Balance;
 import org.myapp.cashdesk.model.cashier.Cashier;
 import org.myapp.cashdesk.model.denomination.BgnDenomination;
 import org.myapp.cashdesk.model.denomination.Currency;
+import org.myapp.cashdesk.model.denomination.EurDenomination;
 import org.myapp.cashdesk.repository.CashierRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,7 +28,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 @ActiveProfiles("test")
 class FileCashierRepositoryTest {
-    private static final  Map<Currency, Balance> TEST_BALANCE = Map.of(Currency.EUR, new Balance(BigDecimal.valueOf(1000), Map.of(BgnDenomination.FIFTY_LEVA, 20)));
+    private static final  Map<Currency, Balance> TEST_BALANCE = Map.of(Currency.EUR, new Balance(BigDecimal.valueOf(1000), Map.of(EurDenomination.FIFTY_EUROS, 20)));
 
     @Value("${cash-desk.storage.files.cashiers}")
     private String cashiersFile;

@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.myapp.cashdesk.model.cashier.Balance;
 import org.myapp.cashdesk.model.denomination.BgnDenomination;
 import org.myapp.cashdesk.model.denomination.Currency;
+import org.myapp.cashdesk.model.denomination.EurDenomination;
 import org.myapp.cashdesk.model.transaction.OperationType;
 import org.myapp.cashdesk.model.transaction.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 @ActiveProfiles("test")
 class FileTransactionRepositoryTest {
-    private static final  Map<Currency, Balance> TEST_BALANCE = Map.of(Currency.EUR, new Balance(BigDecimal.valueOf(1000), Map.of(BgnDenomination.FIFTY_LEVA, 20)));
+    private static final  Map<Currency, Balance> TEST_BALANCE = Map.of(Currency.EUR, new Balance(BigDecimal.valueOf(1000), Map.of(EurDenomination.FIFTY_EUROS, 20)));
     private static final String TEST_CASHIER_NAME = "TEST_CASHIER_NAME";
     private static final Instant NOW = Instant.now();
     public static final String TEST_TRANSACTION_ID = "TEST_ID";
@@ -94,5 +95,4 @@ class FileTransactionRepositoryTest {
                 timestamp
         );
     }
-
 }

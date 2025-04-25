@@ -23,7 +23,7 @@ public class CashierServiceV1 implements CashierService {
     }
 
     @Override
-    public Cashier findCashier(final Long id) {
+    public Cashier findCashier(final long id) {
         return cashierRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(String.format("Cashier with id=%d not found!", id)));
     }

@@ -36,6 +36,8 @@ A Spring Boot application for managing cash desk operations, including transacti
     export API_KEY=your-secret-key-here
 
 3. Build and run the application:
+
+   ```bash
    mvn clean install
    mvn spring-boot:run
    

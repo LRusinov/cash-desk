@@ -1,4 +1,4 @@
-package org.myapp.cashdesk.filter;
+package org.myapp.cashdesk.security;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

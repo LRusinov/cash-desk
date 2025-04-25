@@ -26,6 +26,11 @@ public class RestExceptionHandler {
                 .body(new CashDeskErrorValidationResponseDTO(HttpStatus.BAD_REQUEST.value(), validationErrorMessages));
     }
 
+    @ExceptionHandler(CashDeskValidationException.class)
+    public ResponseEntity<CashDeskErrorDTO> handleCashDeskValidation(MethodArgumentNotValidException ex) {
+        return ResponseEntity.badRequest().body(new CashDeskErrorDTO(ex.getMessage()));
+    }
+
     @ExceptionHandler({CashDeskParseException.class, CashDeskSerializationException.class})
     public ResponseEntity<CashDeskErrorDTO> handleParsAndSerialization(MethodArgumentNotValidException ex) {
         return ResponseEntity.internalServerError().body(new CashDeskErrorDTO(ex.getMessage()));

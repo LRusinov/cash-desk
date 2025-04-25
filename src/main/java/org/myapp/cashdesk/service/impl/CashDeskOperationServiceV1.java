@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.myapp.cashdesk.dto.response.BalanceDTO;
 import org.myapp.cashdesk.dto.request.CashOperationRequestDTO;
 import org.myapp.cashdesk.dto.response.TransactionDTO;
+import org.myapp.cashdesk.exception.CashDeskValidationException;
 import org.myapp.cashdesk.model.cashier.Balance;
 import org.myapp.cashdesk.model.denomination.Currency;
 import org.myapp.cashdesk.model.transaction.Transaction;
@@ -33,7 +34,7 @@ public class CashDeskOperationServiceV1 implements CashDeskOperationService {
     private final TransactionService transactionService;
 
     public TransactionDTO processOperation(final CashOperationRequestDTO request) {
-        validateRequest(request);
+        validateRequestDto(request);
 
         Transaction transaction =
                 switch (request.operationType()) {
@@ -44,9 +45,9 @@ public class CashDeskOperationServiceV1 implements CashDeskOperationService {
         return convertToDto(transactionService.save(transaction));
     }
 
-    private void validateRequest(final CashOperationRequestDTO request) {
+    private void validateRequestDto(final CashOperationRequestDTO request) {
         if (request.denominations().isEmpty()) {
-            throw new IllegalArgumentException("At least one denomination must be specified");
+            throw new CashDeskValidationException("At least one denomination must be specified!");
         }
 
         BigDecimal calculatedAmount = request.denominations().entrySet().stream()
@@ -54,7 +55,7 @@ public class CashDeskOperationServiceV1 implements CashDeskOperationService {
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
         if (calculatedAmount.compareTo(request.amount()) != 0) {
-            throw new IllegalArgumentException("Denominations don't match the specified amount");
+            throw new CashDeskValidationException("Denominations don't match the specified amount!");
         }
     }
 

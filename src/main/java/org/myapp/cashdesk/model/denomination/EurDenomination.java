@@ -6,6 +6,8 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
+import static java.util.Objects.isNull;
+
 public enum EurDenomination implements Denomination {
     // Coins
     ONE_CENT(BigDecimal.valueOf(0.01)),
@@ -42,7 +44,11 @@ public enum EurDenomination implements Denomination {
     }
 
     public static EurDenomination findByValue(final BigDecimal value) {
-        return valuesMap.get(value);
+        EurDenomination denomination = valuesMap.get(value);
+        if (isNull(denomination)) {
+            throw new IllegalArgumentException("No EUR Denomination found for value " + value);
+        }
+        return denomination;
     }
 
     @Override

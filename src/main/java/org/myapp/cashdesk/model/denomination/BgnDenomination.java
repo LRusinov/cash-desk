@@ -6,6 +6,8 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
+import static java.util.Objects.isNull;
+
 
 public enum BgnDenomination implements Denomination {
     // Coins
@@ -41,7 +43,11 @@ public enum BgnDenomination implements Denomination {
     }
 
     public static BgnDenomination findByValue(final BigDecimal value) {
-        return valuesMap.get(value);
+        BgnDenomination denomination = valuesMap.get(value);
+        if (isNull(denomination)) {
+            throw new IllegalArgumentException("No BGN Denomination found for value " + value);
+        }
+        return denomination;
     }
 
     @Override

@@ -1,4 +1,4 @@
-package org.myapp.cashdesk.repository.serializer;
+package org.myapp.cashdesk.repository.impl.serializer;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -25,6 +25,7 @@ public abstract class BaseFileSerializer<T> implements FileSerializer<T> {
     private static final String BALANCE_DELIMITER = "->";
     private static final String CURRENCY_DELIMITER = ";";
     private static final String EMPTY_STRING = "";
+    public static final int MAX_NUMBER_OF_DIFFERENT_BALANCES = Currency.values().length;
     private static final int BALANCE_AMOUNT_INDEX = 0;
     private static final int BALANCE_DENOMINATION_INDEX = 1;
     private static final int NUMBER_OF_BALANCE_FIELDS = 2;
@@ -44,7 +45,7 @@ public abstract class BaseFileSerializer<T> implements FileSerializer<T> {
                 .collect(Collectors.joining(ITEM_DELIMITER));
     }
 
-    protected Map<Denomination, Integer> parseDenominations(final String denominationsStr,final Currency currency) {
+    protected Map<Denomination, Integer> parseDenominations(final String denominationsStr, final Currency currency) {
         if (denominationsStr.isEmpty()) return Map.of();
 
         return Arrays.stream(denominationsStr.split(ITEM_DELIMITER))
@@ -70,58 +71,10 @@ public abstract class BaseFileSerializer<T> implements FileSerializer<T> {
     }
 
     private String serializeBalance(final Balance balance, final Currency currency) {
-        try {
-            return balance.getTotalAmount() +
-                    currency.name() +
-                    BALANCE_DELIMITER +
-                    joinDenominations(balance.getDenominations());
-        } catch (Exception e) {
-            throw new CashDeskSerializationException(
-                    String.format("Failed to serialize balance for currency %s", currency), e);
-        }
-    }
-
-    protected Map.Entry<Currency, Balance> parseBalanceEntry(final String balanceEntry) {
-
-        String[] parts = balanceEntry.split(BALANCE_DELIMITER, 2);
-        validateCorrectFormat(NUMBER_OF_BALANCE_FIELDS, parts.length, "{amount}{CURRENCY}->{denominations}", balanceEntry);
-
-        String amountPart = parts[BALANCE_AMOUNT_INDEX];
-        Currency currency = extractCurrency(amountPart);
-        if (isNull(currency)) {
-            throw new CashDeskParseException("Unknown currency in amount: " + amountPart);
-        }
-
-        String amountStr = amountPart.replace(currency.name(), EMPTY_STRING);
-        BigDecimal total = new BigDecimal(amountStr);
-
-        Map<Denomination, Integer> denominations = parseDenominations(parts[BALANCE_DENOMINATION_INDEX], currency);
-        return Map.entry(currency, new Balance(total, denominations));
-    }
-
-    protected void validateCorrectNumberOfFields(final int expectedNumberOfFields, final int partsLength, final String line) {
-        if (partsLength < expectedNumberOfFields) {
-            throw new CashDeskParseException(
-                    String.format("Invalid line format! Expected at least %d fields to be parsed but got %d in line: '%s'",
-                            expectedNumberOfFields, partsLength, line)
-            );
-        }
-    }
-
-    protected void validateCorrectFormat(final int expectedNumberOfFields, final int partsLength, final String expectedFormat, final String actual) {
-        if (partsLength < expectedNumberOfFields) {
-            throw new CashDeskParseException(String.format("Invalid line format! The expected format is '%s' but got '%s'", expectedFormat, actual)
-            );
-        }
-    }
-
-    private Currency extractCurrency(final String amountStr) {
-        for (Currency currency : Currency.values()) {
-            if (amountStr.contains(currency.name())) {
-                return currency;
-            }
-        }
-        return null;
+        return balance.getTotalAmount() +
+                currency.name() +
+                BALANCE_DELIMITER +
+                joinDenominations(balance.getDenominations());
     }
 
     protected Map<Currency, Balance> parseBalances(final String balancesStr) {
@@ -136,8 +89,48 @@ public abstract class BaseFileSerializer<T> implements FileSerializer<T> {
                             Map.Entry::getKey,
                             Map.Entry::getValue
                     ));
-        } catch (Exception e) {
+        } catch (CashDeskParseException e) {
+            throw e;
+        }
+        catch (Exception e) {
             throw new CashDeskParseException("Failed to parse balances: " + balancesStr, e);
         }
+    }
+
+    protected Map.Entry<Currency, Balance> parseBalanceEntry(final String balanceEntry) {
+        String[] parts = balanceEntry.split(BALANCE_DELIMITER, MAX_NUMBER_OF_DIFFERENT_BALANCES);
+        validateCorrectFormatOfDenomination(NUMBER_OF_BALANCE_FIELDS, parts.length, "{amount}{CURRENCY}->{denominations}", balanceEntry);
+
+        String amountPart = parts[BALANCE_AMOUNT_INDEX];
+        Currency currency = extractCurrency(amountPart);
+        String totalAmountStr = amountPart.replace(currency.name(), EMPTY_STRING);
+
+        Map<Denomination, Integer> denominations = parseDenominations(parts[BALANCE_DENOMINATION_INDEX], currency);
+        return Map.entry(currency, new Balance(new BigDecimal(totalAmountStr), denominations));
+    }
+
+    protected void validateCorrectNumberOfFields(final int expectedNumberOfFields, final int partsLength, final String line) {
+        if (partsLength < expectedNumberOfFields) {
+            throw new CashDeskParseException(
+                    String.format("Invalid line format! Expected at least %d fields to be parsed but got %d in line: '%s'",
+                            expectedNumberOfFields, partsLength, line)
+            );
+        }
+    }
+
+    protected void validateCorrectFormatOfDenomination(final int expectedNumberOfFields, final int partsLength, final String expectedFormat, final String actual) {
+        if (partsLength < expectedNumberOfFields) {
+            throw new CashDeskParseException(String.format("Invalid line format! The expected format is '%s' but got '%s'", expectedFormat, actual)
+            );
+        }
+    }
+
+    private Currency extractCurrency(final String amountStr) {
+        for (Currency currency : Currency.values()) {
+            if (amountStr.contains(currency.name())) {
+                return currency;
+            }
+        }
+        throw new CashDeskParseException("Unknown currency in amount: " + amountStr);
     }
 }

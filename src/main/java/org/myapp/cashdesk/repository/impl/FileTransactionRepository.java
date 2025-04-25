@@ -5,8 +5,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.myapp.cashdesk.model.transaction.Transaction;
 import org.myapp.cashdesk.repository.TransactionRepository;
-import org.myapp.cashdesk.repository.serializer.FileSerializer;
-import org.myapp.cashdesk.repository.serializer.TransactionSerializer;
+import org.myapp.cashdesk.repository.impl.serializer.FileSerializer;
+import org.myapp.cashdesk.repository.impl.serializer.TransactionSerializer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 

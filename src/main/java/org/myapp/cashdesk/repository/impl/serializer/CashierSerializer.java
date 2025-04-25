@@ -1,4 +1,4 @@
-package org.myapp.cashdesk.repository.serializer;
+package org.myapp.cashdesk.repository.impl.serializer;
 
 import lombok.extern.slf4j.Slf4j;
 import org.myapp.cashdesk.exception.CashDeskParseException;
@@ -43,7 +43,7 @@ public class CashierSerializer extends BaseFileSerializer<Cashier> {
                     parts[CASHIER_NAME_INDEX],
                     parseBalances(parts[CASHIER_BALANCE_INDEX])
             );
-        } catch (Exception e) {
+        } catch (NumberFormatException  e) {
             throw new CashDeskParseException("Failed to parse cashier from line: " + line, e);
         }
     }

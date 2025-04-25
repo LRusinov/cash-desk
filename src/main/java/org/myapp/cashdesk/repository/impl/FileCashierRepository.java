@@ -7,8 +7,8 @@ import org.myapp.cashdesk.model.denomination.Currency;
 import org.myapp.cashdesk.model.cashier.Balance;
 import org.myapp.cashdesk.model.cashier.Cashier;
 import org.myapp.cashdesk.repository.CashierRepository;
-import org.myapp.cashdesk.repository.serializer.CashierSerializer;
-import org.myapp.cashdesk.repository.serializer.FileSerializer;
+import org.myapp.cashdesk.repository.impl.serializer.CashierSerializer;
+import org.myapp.cashdesk.repository.impl.serializer.FileSerializer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 

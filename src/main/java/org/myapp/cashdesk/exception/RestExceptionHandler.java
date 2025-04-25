@@ -40,4 +40,9 @@ public class RestExceptionHandler {
     public ResponseEntity<CashDeskErrorDTO> handleEntityNotFound(MethodArgumentNotValidException ex) {
         return new ResponseEntity<>(new CashDeskErrorDTO(ex.getMessage()), HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(InsufficientFundsException.class)
+    public ResponseEntity<CashDeskErrorDTO> handleInsufficientFunds(MethodArgumentNotValidException ex) {
+        return ResponseEntity.badRequest().body(new CashDeskErrorDTO(ex.getMessage()));
+    }
 }

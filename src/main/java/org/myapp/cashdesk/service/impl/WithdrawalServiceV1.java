@@ -3,6 +3,7 @@ package org.myapp.cashdesk.service.impl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.myapp.cashdesk.dto.request.CashOperationRequestDTO;
+import org.myapp.cashdesk.exception.InsufficientFundsException;
 import org.myapp.cashdesk.model.cashier.Balance;
 import org.myapp.cashdesk.model.cashier.Cashier;
 import org.myapp.cashdesk.model.denomination.Currency;
@@ -68,7 +69,7 @@ public class WithdrawalServiceV1 extends OperationBaseService implements Withdra
 
     private static void validateDenominationAvailability(final Currency currency, final Denomination requestedDenomination, final int requestedCount, final int availableCount) {
         if (availableCount < requestedCount) {
-            throw new IllegalArgumentException(
+            throw new InsufficientFundsException(
                     "Not enough " + requestedDenomination.getValue() + " " + currency + " banknotes");
         }
     }

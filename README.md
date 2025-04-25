@@ -6,9 +6,7 @@ A Spring Boot application for managing cash desk operations, including transacti
 
 - REST API for cash desk operations
 - Custom exception handling with proper error responses
-- JPA-based data persistence
 - Request validation
-- Multi-module Maven project structure
 
 ## Technologies
 

@@ -5,14 +5,14 @@ import org.myapp.cashdesk.dto.CashDeskErrorDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.List;
 
 import static java.util.Objects.nonNull;
 
-@ControllerAdvice
+@RestControllerAdvice
 public class RestExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -27,22 +27,22 @@ public class RestExceptionHandler {
     }
 
     @ExceptionHandler(CashDeskValidationException.class)
-    public ResponseEntity<CashDeskErrorDTO> handleCashDeskValidation(MethodArgumentNotValidException ex) {
+    public ResponseEntity<CashDeskErrorDTO> handleCashDeskValidation(CashDeskValidationException ex) {
         return ResponseEntity.badRequest().body(new CashDeskErrorDTO(ex.getMessage()));
     }
 
     @ExceptionHandler({CashDeskParseException.class, CashDeskSerializationException.class})
-    public ResponseEntity<CashDeskErrorDTO> handleParsAndSerialization(MethodArgumentNotValidException ex) {
+    public ResponseEntity<CashDeskErrorDTO> handleParsAndSerialization(Exception ex) {
         return ResponseEntity.internalServerError().body(new CashDeskErrorDTO(ex.getMessage()));
     }
 
     @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity<CashDeskErrorDTO> handleEntityNotFound(MethodArgumentNotValidException ex) {
+    public ResponseEntity<CashDeskErrorDTO> handleEntityNotFound(EntityNotFoundException ex) {
         return new ResponseEntity<>(new CashDeskErrorDTO(ex.getMessage()), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(InsufficientFundsException.class)
-    public ResponseEntity<CashDeskErrorDTO> handleInsufficientFunds(MethodArgumentNotValidException ex) {
+    public ResponseEntity<CashDeskErrorDTO> handleInsufficientFunds(InsufficientFundsException ex) {
         return ResponseEntity.badRequest().body(new CashDeskErrorDTO(ex.getMessage()));
     }
 }

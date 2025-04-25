@@ -2,6 +2,7 @@ package org.myapp.cashdesk.repository.impl.serializer;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import org.myapp.cashdesk.exception.CashDeskParseException;
 import org.myapp.cashdesk.exception.CashDeskSerializationException;
 import org.myapp.cashdesk.model.cashier.Balance;
@@ -35,7 +36,11 @@ public abstract class BaseFileSerializer<T> implements FileSerializer<T> {
         return String.join(FIELD_DELIMITER, fields);
     }
 
-    protected String[] splitFields(final String line) {
+    protected String[] splitFields(@NonNull final String line) {
+        if(line.isBlank()){
+            throw new CashDeskParseException("Empty line in file");
+        }
+
         return line.split(FIELD_DELIMITER_REGEX);
     }
 
@@ -63,6 +68,7 @@ public abstract class BaseFileSerializer<T> implements FileSerializer<T> {
 
         try {
             return balances.entrySet().stream()
+                    .sorted(Map.Entry.comparingByKey())
                     .map(entry -> serializeBalance(entry.getValue(), entry.getKey()))
                     .collect(Collectors.joining(CURRENCY_DELIMITER));
         } catch (Exception e) {

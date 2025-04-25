@@ -31,7 +31,6 @@ public class CashDeskController {
                                                                @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) final LocalDate dateFrom,
 
                                                                @RequestParam(required = false)
-                                                               @PastOrPresent(message = "Date to must be in the past or present")
                                                                @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) final LocalDate dateTo) {
         return new ResponseEntity<>(cashDeskBalanceService.getCashierBalance(cashierName, dateFrom, dateTo), HttpStatus.OK);
     }

@@ -69,8 +69,8 @@ public class FileCashierRepository implements CashierRepository {
             cashier.setId(nextId.getAndIncrement());
         }
         cashiersMap.put(cashier.getId(), cashier);
-
-        return persistCashier(cashier);
+        persistAllCashiers();
+        return cashier;
     }
 
     private void loadCashiers() throws IOException {
@@ -104,20 +104,6 @@ public class FileCashierRepository implements CashierRepository {
         persistAllCashiers();
     }
 
-    private Cashier persistCashier(final Cashier cashier) {
-        try {
-            Files.writeString(
-                    cashiersFilePath,
-                    cashierSerializer.serialize(cashier) + System.lineSeparator(),
-                    StandardOpenOption.CREATE,
-                    StandardOpenOption.APPEND
-            );
-        } catch (IOException e) {
-            throw new UncheckedIOException("Failed to persist cashiers", e);
-        }
-        return cashier;
-    }
-
     private void persistAllCashiers() {
         try {
             Files.write(
@@ -135,10 +121,10 @@ public class FileCashierRepository implements CashierRepository {
 
     private void createDirectoryIfMissing() {
         Path path = Path.of(cashierFileDirectory);
-        if(!Files.exists(path)) {
+        if (!Files.exists(path)) {
             try {
                 Files.createDirectory(path);
-            }catch (IOException e) {
+            } catch (IOException e) {
                 throw new UncheckedIOException("Failed to create directory", e);
             }
         }

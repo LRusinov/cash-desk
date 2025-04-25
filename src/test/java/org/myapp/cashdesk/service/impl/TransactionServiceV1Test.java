@@ -46,13 +46,13 @@ class TransactionServiceV1Test {
     }
 
     @Test
-    void findByCashierAndDateRange_shouldReturnEmptyMapWhenNoTransactions() {
+    void findByCashierNameAndDateRange_shouldReturnEmptyMapWhenNoTransactions() {
         //GIVEN
         when(transactionRepository.findByCashierAndDateRange(CASHIER_NAME, FROM_DATE, TO_DATE))
                 .thenReturn(List.of());
 
         //WHEN
-        Map<Long, List<Transaction>> result = transactionService.findByCashierAndDateRange(CASHIER_NAME, FROM_DATE, TO_DATE);
+        Map<Long, List<Transaction>> result = transactionService.findByCashierNameAndDateRange(CASHIER_NAME, FROM_DATE, TO_DATE);
 
         //THEN
         assertTrue(result.isEmpty());
@@ -60,7 +60,7 @@ class TransactionServiceV1Test {
     }
 
     @Test
-    void findByCashierAndDateRange_shouldGroupTransactionsByCashierId() {
+    void findByCashierAndDateRange_shouldGroupTransactionsByCashierNameId() {
         //GIVEN
         Transaction transaction1 = createTestTransaction(CASHIER_ID_1, "Peter");
         Transaction transaction2 = createTestTransaction(CASHIER_ID_1, "Peter");
@@ -70,7 +70,7 @@ class TransactionServiceV1Test {
                 .thenReturn(List.of(transaction1, transaction2, transaction3));
 
         //WHEN
-        Map<Long, List<Transaction>> result = transactionService.findByCashierAndDateRange(CASHIER_NAME, FROM_DATE, TO_DATE);
+        Map<Long, List<Transaction>> result = transactionService.findByCashierNameAndDateRange(CASHIER_NAME, FROM_DATE, TO_DATE);
 
         //THEN
         assertEquals(2, result.size());
@@ -82,7 +82,7 @@ class TransactionServiceV1Test {
     }
 
     @Test
-    void findByCashierAndDateRange_shouldHandleMultipleCashiersWithSameName() {
+    void findByCashierNameAndDateRange_shouldHandleMultipleCashiersWithSameName() {
         //GIVEN
         Transaction transaction1 = createTestTransaction(CASHIER_ID_1, CASHIER_NAME);
         Transaction transaction2 = createTestTransaction(CASHIER_ID_2, CASHIER_NAME);
@@ -91,7 +91,7 @@ class TransactionServiceV1Test {
                 .thenReturn(List.of(transaction1, transaction2));
 
         //WHEN
-        Map<Long, List<Transaction>> result = transactionService.findByCashierAndDateRange(CASHIER_NAME, FROM_DATE, TO_DATE);
+        Map<Long, List<Transaction>> result = transactionService.findByCashierNameAndDateRange(CASHIER_NAME, FROM_DATE, TO_DATE);
 
         //THEN
         assertEquals(2, result.size());

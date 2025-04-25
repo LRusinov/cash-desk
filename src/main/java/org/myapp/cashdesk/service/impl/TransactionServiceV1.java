@@ -28,8 +28,8 @@ public class TransactionServiceV1 implements TransactionService {
     }
 
     @Override
-    public Map<Long, List<Transaction>> findByCashierAndDateRange(final String cashierName, final LocalDate fromDate,
-                                                                  final LocalDate toDate) {
+    public Map<Long, List<Transaction>> findByCashierNameAndDateRange(final String cashierName, final LocalDate fromDate,
+                                                                      final LocalDate toDate) {
         return transactionRepository.findByCashierAndDateRange(cashierName, fromDate, toDate).stream()
                 .collect(Collectors.groupingBy(Transaction::getCashierId));
     }

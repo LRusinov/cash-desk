@@ -40,7 +40,7 @@ class CashDeskBalanceServiceV1Test {
     private static final Instant TIMESTAMP = Instant.parse("2023-01-15T12:00:00Z");
 
     @Test
-    void getCashierBalance_shouldReturnCorrectBalanceHistory() {
+    void getCashierBalance_shouldReturnCorrectBalanceByNameAndPeriodHistory() {
         //GIVEN
         Map<Currency, Balance> testBalance =
                 Map.of(Currency.EUR, new Balance(BigDecimal.valueOf(500), Map.of(EurDenomination.FIVE_EUROS, 100)),
@@ -52,11 +52,11 @@ class CashDeskBalanceServiceV1Test {
         Map<Long, List<Transaction>> mockTransactions = Map.of(1L, List.of(transaction1, transaction2));
 
         //MOCK
-        when(transactionService.findByCashierAndDateRange(CASHIER_NAME, DATE_FROM, DATE_TO))
+        when(transactionService.findByCashierNameAndDateRange(CASHIER_NAME, DATE_FROM, DATE_TO))
                 .thenReturn(mockTransactions);
 
         //WHEN
-        List<CashierHistoryDTO> result = balanceService.getCashierBalance(CASHIER_NAME, DATE_FROM, DATE_TO);
+        List<CashierHistoryDTO> result = balanceService.getCashierBalanceByNameAndPeriod(CASHIER_NAME, DATE_FROM, DATE_TO);
 
         //THEN
         assertEquals(1, result.size());
@@ -79,13 +79,13 @@ class CashDeskBalanceServiceV1Test {
     }
 
     @Test
-    void getCashierBalance_shouldHandleEmptyTransactionList() {
+    void getCashierBalance_ByNameAndPeriod_shouldHandleEmptyTransactionList() {
         //MOCKING
-        when(transactionService.findByCashierAndDateRange(CASHIER_NAME, DATE_FROM, DATE_TO))
+        when(transactionService.findByCashierNameAndDateRange(CASHIER_NAME, DATE_FROM, DATE_TO))
                 .thenReturn(Map.of());
 
         //WHEN
-        List<CashierHistoryDTO> result = balanceService.getCashierBalance(CASHIER_NAME, DATE_FROM, DATE_TO);
+        List<CashierHistoryDTO> result = balanceService.getCashierBalanceByNameAndPeriod(CASHIER_NAME, DATE_FROM, DATE_TO);
 
         //THEN
         assertTrue(result.isEmpty());

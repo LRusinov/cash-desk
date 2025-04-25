@@ -1,6 +1,7 @@
 package org.myapp.cashdesk.controller;
 
-import jakarta.validation.constraints.PastOrPresent;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
 import org.myapp.cashdesk.dto.response.CashierHistoryDTO;
@@ -24,14 +25,14 @@ public class CashDeskController {
     private final CashDeskBalanceService cashDeskBalanceService;
 
     @GetMapping("/cash-balance")
-    public ResponseEntity<List<CashierHistoryDTO>> cashBalance(@RequestParam(required = false)
+    public ResponseEntity<List<CashierHistoryDTO>> getCashierBalanceByNameAndPeriod(@RequestParam(required = false)
                                                                @Size(min = 2, message = "Cashier name must be at least 2 characters long") final String cashierName,
 
-                                                               @RequestParam(required = false)
+                                                                                    @RequestParam(required = false)
                                                                @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) final LocalDate dateFrom,
 
-                                                               @RequestParam(required = false)
+                                                                                    @RequestParam(required = false)
                                                                @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) final LocalDate dateTo) {
-        return new ResponseEntity<>(cashDeskBalanceService.getCashierBalance(cashierName, dateFrom, dateTo), HttpStatus.OK);
+        return new ResponseEntity<>(cashDeskBalanceService.getCashierBalanceByNameAndPeriod(cashierName, dateFrom, dateTo), HttpStatus.OK);
     }
 }

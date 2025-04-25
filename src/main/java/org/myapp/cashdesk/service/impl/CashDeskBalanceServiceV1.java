@@ -27,8 +27,8 @@ public class CashDeskBalanceServiceV1 implements CashDeskBalanceService {
 
     private final TransactionService transactionService;
 
-    public List<CashierHistoryDTO> getCashierBalance(String cashierName, LocalDate dateFrom, LocalDate dateTo) {
-        return transactionService.findByCashierAndDateRange(cashierName, dateFrom, dateTo).entrySet()
+    public List<CashierHistoryDTO> getCashierBalanceByNameAndPeriod(String cashierName, LocalDate dateFrom, LocalDate dateTo) {
+        return transactionService.findByCashierNameAndDateRange(cashierName, dateFrom, dateTo).entrySet()
                 .stream()
                 .map(entry -> new CashierHistoryDTO(entry.getKey(),
                         getTransactionCashierName(entry.getValue()),

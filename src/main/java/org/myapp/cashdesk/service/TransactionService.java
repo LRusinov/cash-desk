@@ -9,5 +9,5 @@ import java.util.Map;
 public interface TransactionService {
     Transaction save(Transaction transaction);
 
-    Map<Long, List<Transaction>> findByCashierAndDateRange(String cashierName, LocalDate fromDate, LocalDate toDate);
+    Map<Long, List<Transaction>> findByCashierNameAndDateRange(String cashierName, LocalDate fromDate, LocalDate toDate);
 }

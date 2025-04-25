@@ -6,5 +6,5 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface CashDeskBalanceService {
-    List<CashierHistoryDTO> getCashierBalance(String cashierName, LocalDate dateFrom, LocalDate dateTo);
+    List<CashierHistoryDTO> getCashierBalanceByNameAndPeriod(String cashierName, LocalDate dateFrom, LocalDate dateTo);
 }

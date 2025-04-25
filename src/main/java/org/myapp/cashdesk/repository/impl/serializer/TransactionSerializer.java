@@ -40,7 +40,7 @@ public class TransactionSerializer extends BaseFileSerializer<Transaction> {
         if (isNull(transaction)) {
             throw new CashDeskSerializationException("Failed to serialize transaction! Cashier can not be null!");
         }
-
+        log.info("Serializing transaction");
         try {
             return joinFields(
                     transaction.getId(),
@@ -70,6 +70,8 @@ public class TransactionSerializer extends BaseFileSerializer<Transaction> {
     @Override
     public Transaction parse(final String line) {
         checkIfLineIsNull(line);
+        log.info("Parsing transaction from line: {}", line);
+
         String[] parts = splitFields(line);
         validateCorrectNumberOfFields(NUMBER_OF_TRANSACTION_FIELDS, parts.length, line);
 

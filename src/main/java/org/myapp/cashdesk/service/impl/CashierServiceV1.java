@@ -28,6 +28,7 @@ public class CashierServiceV1 implements CashierService {
      */
     @Override
     public Cashier save(final Cashier cashier) {
+        log.info("Saving cashier with name: {}", cashier.getName());
         return cashierRepository.save(cashier);
     }
 
@@ -40,6 +41,7 @@ public class CashierServiceV1 implements CashierService {
      */
     @Override
     public Cashier findCashier(final long id) {
+        log.info("Searching for cashier with id {}", id);
         return cashierRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(String.format("Cashier with id=%d not found!", id)));
     }

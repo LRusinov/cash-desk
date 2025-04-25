@@ -55,6 +55,7 @@ public class CashDeskOperationServiceV1 implements CashDeskOperationService {
     }
 
     private void validateRequestDto(final CashOperationRequestDTO request) {
+        log.info("Validating request");
         if (request.denominations().isEmpty()) {
             throw new CashDeskValidationException("At least one denomination must be specified!");
         }

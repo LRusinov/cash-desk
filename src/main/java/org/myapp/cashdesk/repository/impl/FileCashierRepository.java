@@ -120,6 +120,7 @@ public class FileCashierRepository implements CashierRepository {
     }
 
     private void persistAllCashiers() {
+        log.info("Persisting all cashiers");
         try {
             Files.write(
                     cashiersFilePath,

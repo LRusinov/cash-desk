@@ -36,6 +36,7 @@ public class WithdrawalServiceV1 extends OperationBaseService implements Withdra
      * @return object which contains the transaction information for the executed withdrawal operation
      */
     public Transaction processWithdrawal(final CashOperationRequestDTO request) {
+        log.info("processWithdrawal");
         Cashier originalCashier = cashierService.findCashier(request.cashierId());
         Currency requestedCurrency = request.currency();
 

@@ -48,6 +48,7 @@ public class CashierSerializer extends BaseFileSerializer<Cashier> {
     @Override
     public Cashier parse(final String line) {
         checkIfLineIsNull(line);
+        log.info("Parsing cashier from line: {}", line);
         String[] parts = splitFields(line);
         validateCorrectNumberOfFields(NUMBER_OF_CASHIER_FIELDS, parts.length, line);
 

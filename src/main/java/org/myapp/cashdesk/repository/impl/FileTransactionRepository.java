@@ -63,6 +63,7 @@ public class FileTransactionRepository implements TransactionRepository {
             transaction.setId(TRANSACTION_ID_PREFIX + generateId());
         }
 
+        log.info("Saving transaction {} to file", transaction);
         try {
             Files.writeString(
                     transactionsFilePath,
@@ -87,6 +88,7 @@ public class FileTransactionRepository implements TransactionRepository {
      */
     @Override
     public List<Transaction> findByCashierAndDateRange(@Nullable final String cashierName,@Nullable final LocalDate fromDate,@Nullable final LocalDate toDate) {
+        log.info("Filtering the transactions");
         return transactionsCache.values().stream()
                 .filter(t -> isNull(cashierName) || Objects.equals(t.getCashierName(), cashierName))
                 .filter(t -> isNull(fromDate) || isAfterOrEqual(fromDate, t.getTimestamp()))

@@ -2,6 +2,7 @@ package org.myapp.cashdesk.service.impl;
 
 import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.myapp.cashdesk.dto.response.BalanceDTO;
 import org.myapp.cashdesk.dto.response.BalanceOnDateDTO;
 import org.myapp.cashdesk.dto.response.CashierHistoryDTO;
@@ -19,15 +20,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static java.util.Objects.nonNull;
 import static org.myapp.cashdesk.utils.DenominationUtils.convertAllKeysToBigDecimal;
 
 /**
  * Service is responsible for handling different operations with the cashier's balances
  */
+@Slf4j
 @Service
 @Transactional
 @RequiredArgsConstructor
 public class CashDeskBalanceServiceV1 implements CashDeskBalanceService {
+    private static final String EMPTY_STRING = "";
 
     private final TransactionService transactionService;
 
@@ -42,6 +46,10 @@ public class CashDeskBalanceServiceV1 implements CashDeskBalanceService {
     public List<CashierHistoryDTO> getCashierBalanceByNameAndPeriod(@Nullable final String cashierName,
                                                                     @Nullable final LocalDate dateFrom,
                                                                     @Nullable final LocalDate dateTo) {
+        log.info("Getting cashiers balances by given non-null filters: {} {} {}",
+                nonNull(cashierName) ? "Cashier Name:" + cashierName: EMPTY_STRING,
+                nonNull(dateFrom) ? "Date from:" +dateFrom : EMPTY_STRING,
+                nonNull(dateTo) ? "Date to:" + dateTo: EMPTY_STRING);
         return transactionService.findByCashierNameAndDateRange(cashierName, dateFrom, dateTo).entrySet()
                 .stream()
                 .map(entry -> new CashierHistoryDTO(entry.getKey(),

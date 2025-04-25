@@ -16,7 +16,7 @@ public record CashOperationRequestDTO(
         Long cashierId,
 
         @NotNull(message = "Currency cannot be null")
-        @NotNull Currency currency,
+        Currency currency,
 
         @NotNull(message = "Operation type cannot be null")
         OperationType operationType,
